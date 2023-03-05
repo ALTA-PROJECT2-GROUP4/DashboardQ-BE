@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  title: Brain.Academy
+  description: This is API for Group Project By Alterra Academy
+  version: "1.0.0"
+  contact:
+    email: alfianadityadwi@gmail.com
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+  - name: login
+    description: endpoint for verifying who a user is
+  - name: admin
+  - name: user
+
+paths:
+  /register:
+    post:
+      tags:
+        - "admin"
+      summary: "register new user"
+      description: "feature for admin register new user"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                birth_of_date:
+                  type: string
+                gender:
+                  type: string
+                address:
+                  type: string
+                role:
+                  type: string
+                team:
+                  type: string
+                phone:
+                  type: string
+                password:
+                  type: string
+                  format: password
+            example:
+              full_name: "alfian aditya"
+              email: "alfian@example.com"
+              birth_of_date: "2020-02-20"
+              gender: "male"
+              address: "jln. Merpati No 18, Kasihan, Bantul, Yogyakarta, 55184"
+              role: "user"
+              team: "academy"
+              phone: "0812334455"
+              password: "alifganteng"
+      responses:
+        201:
+          description: "success insert data"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "success create account"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+
+  /login:
+    post:
+      tags:
+        - "login"
+      summary: "login account"
+      description: "feature for verifying who a admin or user is"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+            example:
+              email: "alfian@example.com"
+              password: "alifganteng"
+      responses:
+        200:
+          description: "success login"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  full_name: "alfian aditya"
+                  email: "alfian@example.com"
+                  gender: "male"
+                  role: "user"
+                  team: "academy"
+                  phone: "0812334455"
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJ1c2VySUQiOjR9.QTZxERh4CwC_UnL_eJvTi_A_qdLeBZ-IjR4nqoxjodk"
+                message: "login success"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          description: "data not found"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "account not registered"
+        500:
+          $ref: "#/components/responses/500"
+
+components:
+  schemas:
+    responseObject:
+      type: object
+      properties:
+        data:
+          type: object
+        message:
+          type: string
+    responseObjectArr:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        message:
+          type: string
+
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "user token"
+  responses:
+    400:
+      description: "error from user"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "wrong input"
+    500:
+      description: "error from server"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            example:
+              message: "server problem"
