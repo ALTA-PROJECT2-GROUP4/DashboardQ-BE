@@ -8,6 +8,13 @@ info:
   license:
     name: Apache 2.0
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/ALFIANADSAPUTRA_1/DashboardQ/1.0.0
+  # Main URL
+  - description: Main URL
+    url: URL will be update soon
 tags:
   - name: login
     description: endpoint for verifying who a user is
