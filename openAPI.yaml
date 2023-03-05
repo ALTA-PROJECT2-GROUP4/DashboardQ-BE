@@ -22,24 +22,26 @@ tags:
   - name: user
 
 paths:
-  /register:
+  /registeruser:
     post:
       tags:
         - "admin"
       summary: "register new user"
       description: "feature for admin register new user"
+      security:
+        - JWTAuth: []
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                full_name:
+                name:
                   type: string
                 email:
                   type: string
                   format: email
-                birth_of_date:
+                birth_date:
                   type: string
                 gender:
                   type: string
@@ -49,19 +51,22 @@ paths:
                   type: string
                 team:
                   type: string
+                status:
+                  type: string
                 phone:
                   type: string
                 password:
                   type: string
                   format: password
             example:
-              full_name: "alfian aditya"
+              name: "alfian aditya"
               email: "alfian@example.com"
-              birth_of_date: "2020-02-20"
+              birth_date: "2020-02-20"
               gender: "male"
               address: "jln. Merpati No 18, Kasihan, Bantul, Yogyakarta, 55184"
-              role: "user"
-              team: "academy"
+              role: "User"
+              team: "Academy"
+              status: "Active"
               phone: "0812334455"
               password: "alifganteng"
       responses:
@@ -70,7 +75,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/responseObject"
               example:
                 message: "success create account"
         400:
@@ -84,6 +89,8 @@ paths:
         - "login"
       summary: "login account"
       description: "feature for verifying who a admin or user is"
+      security:
+        - JWTAuth: []
       requestBody:
         required: true
         content:
@@ -112,12 +119,212 @@ paths:
                   id: 1
                   full_name: "alfian aditya"
                   email: "alfian@example.com"
-                  gender: "male"
-                  role: "user"
-                  team: "academy"
+                  gender: "Male"
+                  role: "User"
+                  team: "Academy"
                   phone: "0812334455"
                   token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJ1c2VySUQiOjR9.QTZxERh4CwC_UnL_eJvTi_A_qdLeBZ-IjR4nqoxjodk"
                 message: "login success"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          description: "data not found"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "account not registered"
+        500:
+          $ref: "#/components/responses/500"
+
+  /users:
+    get:
+      tags:
+        - "admin"
+      summary: "get all user data"
+      description: "feature add all users data"
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: "success show users data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObjectArr"
+              example:
+                data:
+                  - id: 2
+                    name: "Azura Namini"
+                    email: "azure@example.com"
+                    team: "Admission"
+                    role: "User"
+                    status: "Active"
+                  - id: 3
+                    name: "Muhammad Arnold"
+                    email: "marnold@example.com"
+                    team: "Placement"
+                    role: "User"
+                    status: "Active"
+                  - id: 4
+                    name: "Beni Kurnia"
+                    email: "benkur@example.com"
+                    team: "Mentor"
+                    role: "User"
+                    status: "Active"
+                  - id: 5
+                    name: "Miranda Ramadhan"
+                    email: "miranda@example.com"
+                    team: "Placement"
+                    role: "User"
+                    status: "Non-Active"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+
+  /users/profile:
+    get:
+      tags:
+        - "user"
+      summary: "get user profile by user"
+      description: "feature for get user detail account"
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: "success show user profile"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 6
+                  name: "alfian aditya"
+                  email: "alfian@example.com"
+                  birth_date: "2020-02-20"
+                  gender: "male"
+                  address: "Bantul, Yogyakarta, 55184"
+                  role: "User"
+                  team: "Academy"
+                  status: "Active"
+                  phone: "0812334455"
+                message: "success show profile"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+
+  /users/{id}:
+    put:
+      tags:
+        - "admin"
+      summary: "edit user profile"
+      description: "feature for edit user profile"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              name: "Azura Namini"
+              email: "azure@example.com"
+              team: "Placement"
+              role: "User"
+              status: "Active"
+      responses:
+        200:
+          description: "success update profile"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 2
+                  name: "Azura Namini"
+                  email: "azure@example.com"
+                  team: "Placement"
+                  role: "User"
+                  status: "Active"
+                message: "success update profile"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+    get:
+      tags:
+        - "admin"
+      summary: "get user profile by admin"
+      description: "feature for edit user profile"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "success show user profile"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 6
+                  name: "alfian aditya"
+                  email: "alfian@example.com"
+                  birth_date: "2020-02-20"
+                  gender: "male"
+                  address: "Bantul, Yogyakarta, 55184"
+                  role: "User"
+                  team: "Academy"
+                  status: "Active"
+                  phone: "0812334455"
+                message: "success show profile"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      tags:
+        - "admin"
+      summary: "deactive user account"
+      description: "feature for deactive user account"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "success deactive user profile"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                message: "success deactive user profile"
         400:
           $ref: "#/components/responses/400"
         404:
