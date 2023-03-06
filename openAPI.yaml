@@ -628,6 +628,49 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
+  /class:
+    post:
+      tags:
+        - "class"
+      summary: "add new class"
+      description: "feature for adding new class"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                class_name: 
+                  type: string
+                start_date:
+                  type: string
+                end_date:
+                  type: string
+                mentor_name:
+                  type: string
+            example:
+              class_name: "Back End Batch 10"
+              start_date: "2022-09-14"
+              end_date: "2022-11-10"
+              mentor_name: "Akbar Majid"
+      responses:
+        201:
+          description: "success create class"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                message: "success create class"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+
+      
 components:
   schemas:
     responseObject:
