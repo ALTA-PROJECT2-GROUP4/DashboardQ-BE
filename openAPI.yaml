@@ -87,6 +87,7 @@ paths:
       security:
         - JWTAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -342,6 +343,7 @@ paths:
       security:
         - JWTAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
