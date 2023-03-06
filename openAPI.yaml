@@ -676,7 +676,7 @@ paths:
       description: "feature for show all class data by admin"
       security:
         - JWTAuth: []
-        parameters:
+      parameters:
         - name: name
           description: "class name"
           required: false
@@ -697,14 +697,14 @@ paths:
           in: query
           schema:
             type: string
-            example: "06/03/2023"
+            example: "2023-03-06"
         - name: end class
           description: "end class date"
           required: false
           in: query
           schema:
             type: string
-            example: "06/03/2023" 
+            example: "2023-03-06" 
         - name: mentor
           description: "mentor name"
           required: false
@@ -738,32 +738,32 @@ paths:
                   - id: 1
                     name: "Back End Engineer"
                     batch: "14"
-                    start class: "06/03/2023"
-                    end class: "06/03/2023"
+                    start_class: "06/03/2023"
+                    end_class: "06/03/2023"
                     mentor: "Rachman Kamil"
                   - id: 2
                     name: "Front End Engineer"
                     batch: "14"
-                    start class: "06/03/2023"
-                    end class: "06/03/2023"
+                    start_class: "2023-03-06"
+                    end_class: "2023-03-06"
                     mentor: "Rachman Kamil"
                   - id: 3
                     name: "Back End Engineer"
                     batch: "15"
-                    start class: "06/03/2023"
-                    end class: "06/03/2023"
+                    start_class: "2023-03-06"
+                    end_class: "2023-03-06"
                     mentor: "Rachman Kamil"
                   - id: 4
                     name: "Front End Engineer"
                     batch: "15"
-                    start class: "06/03/2023"
-                    end class: "06/03/2023"
+                    start_class: "2023-03-06"
+                    end_class: "2023-03-06"
                     mentor: "Rachman Kamil"
                   - id: 5
                     name: "Quality Assurance"
                     batch: "15"
-                    start class: "06/03/2023"
-                    end class: "06/03/2023"
+                    start_class: "2023-03-06"
+                    end_class: "2023-03-06"
                     mentor: "Rachman Kamil"
                 message: "success show all class"
         400:
@@ -771,7 +771,7 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-/class/{id}:
+  /class/{id}:
     get:
       tags:
         - "class"
@@ -797,8 +797,8 @@ paths:
                   id: 1
                   name: "Back End Engineer"
                   batch: "14"
-                  start class: "06/03/2023"
-                  end class: "06/03/2023"
+                  start_class: "2023-03-06"
+                  end_class: "2023-03-06"
                   mentor: "Rachman Kamil"
                 message: "success show class profile"
         400:
@@ -829,8 +829,8 @@ paths:
             example:
               name: "Back End Engineer"
               batch: "14"
-              start class: "06/03/2023"
-              end class: "06/03/2023"
+              start_class: "2023-03-06"
+              end_class: "2023-03-06"
               mentor: "Rachman Kamil"
       responses:
         200:
@@ -844,10 +844,10 @@ paths:
                 id: 2
                 name: "BackEnd"
                 batch: "14"
-                start class: "07/03/2023"
-                end class: "07/03/2023"
+                start_class: "2023-03-06"
+                end_class: "2023-03-06"
                 mentor: "fakhry"
-              message: "success update profile"
+                message: "success update profile"
         400:
           $ref: "#/components/responses/400"
         404:
@@ -883,8 +883,8 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-/feedback:
-post:
+  /feedback:
+    post:
       tags:
         - "feedback"
       summary: "add new feedback"
@@ -924,7 +924,7 @@ post:
           $ref: "#/components/responses/400"
         500:
           $ref: "#/components/responses/500"
- get:
+    get:
       tags:
         - "class"
       summary: "show feedback by id"
@@ -939,23 +939,29 @@ post:
             type: integer
       responses:
         200:
-          description: "show class data"
+          description: "show feedback"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseObject"
               example:
                 data:
-                  notes: "keep going"
-                  status: "continue section 2"
-                  user: {
-                    user_id: 1,
-                    name: "Rachman Kamil"
-                  }
-                  mentee: {
-                    mentee_id: 1,
+                  mentee: 
+                    mentee_id: 1
                     name: "Bambang Suwono"
-                  }
+                    class: "BE Batch 15"
+                    category: "IT"
+                    phone: "081122334455"
+                    telegram: "@bambs"
+                    email: "bambs@gmail.coom"                  
+                    user: 
+                    - user_id: 1
+                      name: "Rachman Kamil"
+                      created_at: "2023-03-06"
+                      status: "interview agreed"
+                      notes: 
+                        notes_id : 1
+                        notes: "keep going"
                 message: "success show feedback"
         400:
           $ref: "#/components/responses/400"
