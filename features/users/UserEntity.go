@@ -10,6 +10,7 @@ type Core struct {
 	DateBirth string
 	Email     string `validate:"omitempty,email"`
 	Password  string `validate:"min=6,emitempty"`
+	Address   string
 	Gender    string
 	Role      string
 	Team      string
