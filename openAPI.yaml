@@ -22,7 +22,63 @@ tags:
   - name: user
 
 paths:
-  /registeruser:
+  /login:
+    post:
+      tags:
+        - "login"
+      summary: "login account"
+      description: "feature for verifying who a admin or user is"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+            example:
+              email: "alfian@example.com"
+              password: "alifganteng"
+      responses:
+        200:
+          description: "success login"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 6
+                  full_name: "alfian aditya"
+                  email: "alfian@example.com"
+                  gender: "Male"
+                  role: "User"
+                  team: "Academy"
+                  phone: "0812334455"
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJ1c2VySUQiOjR9.QTZxERh4CwC_UnL_eJvTi_A_qdLeBZ-IjR4nqoxjodk"
+                message: "login success"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          description: "data not found"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "account not registered"
+        500:
+          $ref: "#/components/responses/500"
+
+  /users:
     post:
       tags:
         - "admin"
@@ -83,63 +139,6 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-  /login:
-    post:
-      tags:
-        - "login"
-      summary: "login account"
-      description: "feature for verifying who a admin or user is"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                  format: password
-            example:
-              email: "alfian@example.com"
-              password: "alifganteng"
-      responses:
-        200:
-          description: "success login"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/responseObject"
-              example:
-                data:
-                  id: 6
-                  full_name: "alfian aditya"
-                  email: "alfian@example.com"
-                  gender: "Male"
-                  role: "User"
-                  team: "Academy"
-                  phone: "0812334455"
-                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJ1c2VySUQiOjR9.QTZxERh4CwC_UnL_eJvTi_A_qdLeBZ-IjR4nqoxjodk"
-                message: "login success"
-        400:
-          $ref: "#/components/responses/400"
-        404:
-          description: "data not found"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: "account not registered"
-        500:
-          $ref: "#/components/responses/500"
-
-  /users:
     get:
       tags:
         - "admin"
@@ -262,6 +261,8 @@ paths:
                 message: "success update profile"
         400:
           $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
     get:
@@ -299,6 +300,8 @@ paths:
                 message: "success show profile"
         400:
           $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
     delete:
@@ -326,19 +329,249 @@ paths:
         400:
           $ref: "#/components/responses/400"
         404:
-          description: "data not found"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: "account not registered"
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
 
+  /mentee:
+    post:
+      tags:
+        - "admin"
+      summary: "add mentee by admin"
+      description: "feature for add mentee from admin side"
+      security:
+        - JWTAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                birth_date:
+                  type: string
+                address:
+                  type: string
+                gender:
+                  type: string
+                telegram:
+                  type: string
+                phone:
+                  type: string
+                class:
+                  type: string
+                status:
+                  type: string
+                category:
+                  type: string
+            example:
+              name: "Susilo Ahmad"
+              email: "susiloahmd@example.com"
+              birth_date: "1995-12-03"
+              address: "Ubud, Bali"
+              gender: "Male"
+              telegram: "08211223344"
+              phone: "08211223344"
+              class: "BE Batch 10"
+              status: "Active"
+              category: "Non-IT"
+      responses:
+        201:
+          description: "success add mentee"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                message: "success create mentee"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+
+    get:
+      tags:
+        - "admin"
+      summary: "show all mentee"
+      description: "feature for show all mentee data by admin"
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: "success show all mentee data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObjectArr"
+              example:
+                data:
+                  - id: 1
+                    name: "Susilo Ahmad"
+                    class: "BE 10"
+                    status: "Active"
+                    category: "Non-IT"
+                    gender: "Male"
+                  - id: 2
+                    name: "Gigih Prakosa"
+                    class:  "BE Batch 9"
+                    status: "Active"
+                    category: "IT"
+                    gender: "Male"
+                  - id: 3
+                    name: "Veronica Ayu"
+                    class: "FE Batch 9"
+                    status: "Garduated"
+                    category:  "IT"
+                    gender: "Female"
+                  - id: 4
+                    name: "Nabila Hanifa"
+                    class:  "FE 8"
+                    status: "Gradueted"
+                    category: "Non-IT"
+                    gender: "Female"
+                  - id: 5
+                    name: "Akbar Rasyid"
+                    class: "QE Batch 10"
+                    status: "Eliminated"
+                    category: "Non-IT"
+                    gender: "Male"
+                message: "success show all mentee"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+
+  /mentee/{id}:
+    get:
+      tags:
+        - "admin"
+      summary: "show mentee profile by id"
+      description: "feature for show mentee profile by id"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "success show mentee profile"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  name: "Susilo Ahmad"
+                  email: "susiloahmd@example.com"
+                  birth_date: "1995-12-03"
+                  address: "Ubud, Bali"
+                  gender: "Male"
+                  telegram: "08211223344"
+                  phone: "08211223344"
+                  class: "BE Batch 10"
+                  status: "Active"
+                  category: "Non-IT"
+                message: "success show mentee profile"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+    put:
+      tags:
+        - "admin"
+      summary: "edit mentee profile"
+      description: "feature for edit mentee data by id"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              name: "Susilo Ahmad"
+              email: "susiloahmd@example.com"
+              birth_date: "1995-12-03"
+              address: "Ubud, Bali"
+              gender: "Male"
+              telegram: "08211223344"
+              phone: "08211223344"
+              class: "BE Batch 10"
+              status: "Graduated"
+              category: "Non-IT"
+      responses:
+        200:
+          description: "success update mentee data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  name: "Susilo Ahmad"
+                  email: "susiloahmd@example.com"
+                  birth_date: "1995-12-03"
+                  address: "Ubud, Bali"
+                  gender: "Male"
+                  telegram: "08211223344"
+                  phone: "08211223344"
+                  class: "BE Batch 10"
+                  status: "Graduated"
+                  category: "Non-IT"
+                message: "success update mentee data"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      tags:
+        - "admin"
+      summary: "delete mentee data"
+      description: "feature for delete mentee data"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "success delete mentee data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                message: "success delete mentee data"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+      
 components:
   schemas:
     responseObject:
@@ -376,6 +609,17 @@ components:
                 type: string
           example:
             message: "wrong input"
+    404:
+      description: "data not found"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "account not registered"
     500:
       description: "error from server"
       content:
