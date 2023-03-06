@@ -20,15 +20,35 @@ type Core struct {
 type UserHandler interface {
 	Register() echo.HandlerFunc
 	Login() echo.HandlerFunc
+	ShowAllAdm() echo.HandlerFunc
+	ProfileAdm() echo.HandlerFunc
+	UpdateAdm() echo.HandlerFunc
 	ShowAll() echo.HandlerFunc
-	Update() echo.HandlerFunc
 	Profile() echo.HandlerFunc
+	Update() echo.HandlerFunc
 	Deactive() echo.HandlerFunc
 }
 
 type UserService interface {
 	Register(token interface{}, newUser Core) (Core, error)
 	Login(email, password string) (string, Core, error)
-	ShowAll()
+	ShowAllAdm() ([]Core, error)
+	ProfileAdm(userID uint) (Core, error)
+	ShowAll() ([]Core, error)
+	Profile(token interface{}) (Core, error)
+	UpdateAdm(token interface{}, userID uint, newUpdate Core) (Core, error)
+	Update(token interface{}, newUpdate Core) (Core, error)
+	Deactive(token interface{}, userID uint) error
 }
-type UserData interface {}
+
+type UserData interface {
+	Register(adminID uint, newUser Core) (Core, error)
+	Login(email string) (Core, error)
+	ShowAllAdm() ([]Core, error)
+	ProfileAdm(userID uint) (Core, error)
+	UpdateAdm(adminID, userID uint, newUpdate Core) (Core, error)
+	ShowAll() ([]Core, error)
+	Profile(userID uint) (Core, error)
+	Update(userID uint, newUser Core) (Core, error)
+	Deactive(adminID, userID uint) error
+}
