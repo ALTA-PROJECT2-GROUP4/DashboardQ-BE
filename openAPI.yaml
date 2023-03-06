@@ -136,6 +136,141 @@ paths:
 
     get:
       tags:
+        - "admin"
+      summary: "get all user data"
+      description: "feature add all users data"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: name
+          description: "user name"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "Ahmad Zaori"
+        - name: email
+          description: "user email"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "ahzoi@example.com"
+        - name: team
+          description: "user team"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "Mentor"
+        - name: role
+          description: "user role"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "User"
+        - name: status
+          description: "user status"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "Active"
+        - name: limit
+          description: "limit"
+          required: false
+          in: query
+          schema:
+            type: integer
+            example: 10
+        - name: offset
+          description: "offset"
+          required: false
+          in: query
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: "show users data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObjectArr"
+              example:
+                data:
+                  - id: 2
+                    name: "Azura Namini"
+                    email: "azure@example.com"
+                    team: "Admission"
+                    role: "User"
+                    status: "Active"
+                  - id: 3
+                    name: "Muhammad Arnold"
+                    email: "marnold@example.com"
+                    team: "Placement"
+                    role: "User"
+                    status: "Active"
+                  - id: 4
+                    name: "Beni Kurnia"
+                    email: "benkur@example.com"
+                    team: "Mentor"
+                    role: "User"
+                    status: "Active"
+                  - id: 5
+                    name: "Miranda Ramadhan"
+                    email: "miranda@example.com"
+                    team: "Placement"
+                    role: "User"
+                    status: "Non-Active"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  
+  /profile/{user_id}:
+    get:
+      tags:
+        - "user"
+      summary: "get user profile by user"
+      description: "feature for get user detail account"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "show user profile"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 6
+                  name: "alfian aditya"
+                  email: "alfian@example.com"
+                  birth_date: "2020-02-20"
+                  gender: "male"
+                  address: "Bantul, Yogyakarta, 55184"
+                  role: "User"
+                  team: "Academy"
+                  status: "Active"
+                  phone: "0812334455"
+                message: "success show profile"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+          
+  /profile:
+    get:
+      tags:
         - "user"
       summary: "get all user data"
       description: "feature add all users data"
@@ -229,7 +364,7 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-  /users/{id}:
+  /users/{user_id}:
     put:
       tags:
         - "user"
@@ -238,7 +373,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id
+        - name: user_id
           in: path
           required: true
           schema:
@@ -279,13 +414,13 @@ paths:
           $ref: "#/components/responses/500"
     get:
       tags:
-        - "user"
+        - "admin"
       summary: "show user profile by id"
       description: "feature for edit user profile"
       security:
         - JWTAuth: []
       parameters:
-        - name: id
+        - name: user_id
           in: path
           required: true
           schema:
@@ -324,7 +459,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id
+        - name: user_id
           in: path
           required: true
           schema:
@@ -501,7 +636,7 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-  /mentee/{id}:
+  /mentee/{mentee_id}:
     get:
       tags:
         - "mentee"
@@ -510,7 +645,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id
+        - name: mentee_id
           in: path
           required: true
           schema:
@@ -550,7 +685,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id
+        - name: mentee_id
           in: path
           required: true
           schema:
@@ -607,7 +742,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id
+        - name: mentee_id
           in: path
           required: true
           schema:
@@ -771,7 +906,7 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-  /class/{id}:
+  /class/{class_id}:
     get:
       tags:
         - "class"
@@ -780,7 +915,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id
+        - name: class_id
           in: path
           required: true
           schema:
@@ -809,13 +944,13 @@ paths:
           $ref: "#/components/responses/500"
     put:
       tags:
-        - "user"
+        - "class"
       summary: "edit class data"
       description: "feature for edit class data"
       security:
         - JWTAuth: []
       parameters:
-        - name: id
+        - name: class_id
           in: path
           required: true
           schema:
@@ -856,13 +991,13 @@ paths:
           $ref: "#/components/responses/500"
     delete:
       tags:
-        - "user"
+        - "class"
       summary: "Delete class data"
       description: "feature for delete class data"
       security:
         - JWTAuth: []
       parameters:
-        - name: id
+        - name: class_id
           in: path
           required: true
           schema:
@@ -924,15 +1059,17 @@ paths:
           $ref: "#/components/responses/400"
         500:
           $ref: "#/components/responses/500"
+
+  /feedback/{feedback_id}:
     get:
       tags:
-        - "class"
+        - "feedback"
       summary: "show feedback by id"
       description: "feature for show feedback by id"
       security:
         - JWTAuth: []
       parameters:
-        - name: id
+        - name: feedback_id
           in: path
           required: true
           schema:
