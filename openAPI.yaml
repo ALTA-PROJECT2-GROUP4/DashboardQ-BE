@@ -738,8 +738,8 @@ paths:
                   - id: 1
                     name: "Back End Engineer"
                     batch: "14"
-                    start_class: "06/03/2023"
-                    end_class: "06/03/2023"
+                    start_class: "2023-03-06"
+                    end_class: "2023-03-06"
                     mentor: "Rachman Kamil"
                   - id: 2
                     name: "Front End Engineer"
