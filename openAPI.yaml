@@ -20,6 +20,9 @@ tags:
     description: endpoint for verifying who a user is
   - name: admin
   - name: user
+  - name: mentee
+  - name: class
+  - name: feedback
 
 paths:
   /login:
@@ -133,7 +136,7 @@ paths:
 
     get:
       tags:
-        - "admin"
+        - "user"
       summary: "get all user data"
       description: "feature add all users data"
       security:
@@ -226,43 +229,10 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-  /users/profile:
-    get:
-      tags:
-        - "user"
-      summary: "get user profile by user"
-      description: "feature for get user detail account"
-      security:
-        - JWTAuth: []
-      responses:
-        200:
-          description: "show user profile"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/responseObject"
-              example:
-                data:
-                  id: 6
-                  name: "alfian aditya"
-                  email: "alfian@example.com"
-                  birth_date: "2020-02-20"
-                  gender: "male"
-                  address: "Bantul, Yogyakarta, 55184"
-                  role: "User"
-                  team: "Academy"
-                  status: "Active"
-                  phone: "0812334455"
-                message: "success show profile"
-        400:
-          $ref: "#/components/responses/400"
-        500:
-          $ref: "#/components/responses/500"
-
   /users/{id}:
     put:
       tags:
-        - "admin"
+        - "user"
       summary: "edit user profile"
       description: "feature for edit user profile"
       security:
@@ -309,8 +279,8 @@ paths:
           $ref: "#/components/responses/500"
     get:
       tags:
-        - "admin"
-      summary: "get user profile by admin"
+        - "user"
+      summary: "show user profile by id"
       description: "feature for edit user profile"
       security:
         - JWTAuth: []
@@ -348,7 +318,7 @@ paths:
           $ref: "#/components/responses/500"
     delete:
       tags:
-        - "admin"
+        - "user"
       summary: "deactive user account"
       description: "feature for deactive user account"
       security:
@@ -378,7 +348,7 @@ paths:
   /mentee:
     post:
       tags:
-        - "admin"
+        - "mentee"
       summary: "add mentee by admin"
       description: "feature for add mentee from admin side"
       security:
@@ -438,7 +408,7 @@ paths:
 
     get:
       tags:
-        - "admin"
+        - "mentee"
       summary: "show all mentee"
       description: "feature for show all mentee data by admin"
       security:
@@ -534,7 +504,7 @@ paths:
   /mentee/{id}:
     get:
       tags:
-        - "admin"
+        - "mentee"
       summary: "show mentee profile by id"
       description: "feature for show mentee profile by id"
       security:
@@ -574,7 +544,7 @@ paths:
           $ref: "#/components/responses/500"
     put:
       tags:
-        - "admin"
+        - "mentee"
       summary: "edit mentee profile"
       description: "feature for edit mentee data by id"
       security:
@@ -631,7 +601,7 @@ paths:
           $ref: "#/components/responses/500"
     delete:
       tags:
-        - "admin"
+        - "mentee"
       summary: "delete mentee data"
       description: "feature for delete mentee data"
       security:
