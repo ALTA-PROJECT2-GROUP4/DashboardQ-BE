@@ -12,6 +12,7 @@ type User struct {
 	DateBirth string
 	Email     string `gorm:"unique"`
 	Password  string
+	Address   string
 	Gender    string
 	Role      string
 	Team      string
@@ -26,6 +27,7 @@ func ModelToCore(data User) users.Core {
 		DateBirth: data.DateBirth,
 		Email:     data.Email,
 		Password:  data.Password,
+		Address:   data.Address,
 		Gender:    data.Gender,
 		Role:      data.Role,
 		Team:      data.Team,
@@ -41,6 +43,7 @@ func CoreToModel(data users.Core) User {
 		DateBirth: data.DateBirth,
 		Email:     data.Email,
 		Password:  data.Password,
+		Address:   data.Address,
 		Gender:    data.Gender,
 		Role:      data.Role,
 		Team:      data.Team,
