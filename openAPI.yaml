@@ -46,7 +46,7 @@ paths:
               password: "alifganteng"
       responses:
         200:
-          description: "success login"
+          description: "login"
           content:
             application/json:
               schema:
@@ -65,16 +65,7 @@ paths:
         400:
           $ref: "#/components/responses/400"
         404:
-          description: "data not found"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: "account not registered"
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
 
@@ -128,13 +119,13 @@ paths:
               password: "alifganteng"
       responses:
         201:
-          description: "success insert data"
+          description: "insert user data"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseObject"
               example:
-                message: "success create account"
+                message: "success create user account"
         400:
           $ref: "#/components/responses/400"
         500:
@@ -147,9 +138,59 @@ paths:
       description: "feature add all users data"
       security:
         - JWTAuth: []
+      parameters:
+        - name: name
+          description: "user name"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "Ahmad Zaori"
+        - name: email
+          description: "user email"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "ahzoi@example.com"
+        - name: team
+          description: "user team"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "Mentor"
+        - name: role
+          description: "user role"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "User"
+        - name: status
+          description: "user status"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "Active"
+        - name: limit
+          description: "limit"
+          required: false
+          in: query
+          schema:
+            type: integer
+            example: 10
+        - name: offset
+          description: "offset"
+          required: false
+          in: query
+          schema:
+            type: integer
+            example: 1
       responses:
         200:
-          description: "success show users data"
+          description: "show users data"
           content:
             application/json:
               schema:
@@ -195,7 +236,7 @@ paths:
         - JWTAuth: []
       responses:
         200:
-          description: "success show user profile"
+          description: "show user profile"
           content:
             application/json:
               schema:
@@ -246,7 +287,7 @@ paths:
               status: "Active"
       responses:
         200:
-          description: "success update profile"
+          description: "update profile"
           content:
             application/json:
               schema:
@@ -281,7 +322,7 @@ paths:
             type: integer
       responses:
         200:
-          description: "success show user profile"
+          description: "show user profile"
           content:
             application/json:
               schema:
@@ -320,13 +361,13 @@ paths:
             type: integer
       responses:
         200:
-          description: "success deactive user profile"
+          description: "deactive user account"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseObject"
               example:
-                message: "success deactive user profile"
+                message: "success deactive user account"
         400:
           $ref: "#/components/responses/400"
         404:
@@ -383,7 +424,7 @@ paths:
               category: "Non-IT"
       responses:
         201:
-          description: "success add mentee"
+          description: "add mentee data"
           content:
             application/json:
               schema:
@@ -402,9 +443,52 @@ paths:
       description: "feature for show all mentee data by admin"
       security:
         - JWTAuth: []
+      parameters:
+        - name: name
+          description: "mentee name"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "Alfian Aditya"
+        - name: class
+          description: "mentee class"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "BE 15"
+        - name: status
+          description: "mentee status"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "Active"
+        - name: gender
+          description: "mentee gender"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "Male"
+        - name: limit
+          description: "limit"
+          required: false
+          in: query
+          schema:
+            type: integer
+            example: 10
+        - name: offset
+          description: "offset"
+          required: false
+          in: query
+          schema:
+            type: integer
+            example: 1
       responses:
         200:
-          description: "success show all mentee data"
+          description: "show all mentee data"
           content:
             application/json:
               schema:
@@ -463,7 +547,7 @@ paths:
             type: integer
       responses:
         200:
-          description: "success show mentee profile"
+          description: "show mentee profile"
           content:
             application/json:
               schema:
@@ -520,7 +604,7 @@ paths:
               category: "Non-IT"
       responses:
         200:
-          description: "success update mentee data"
+          description: "update mentee data"
           content:
             application/json:
               schema:
@@ -560,7 +644,7 @@ paths:
             type: integer
       responses:
         200:
-          description: "success delete mentee data"
+          description: "delete mentee data"
           content:
             application/json:
               schema:
