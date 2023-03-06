@@ -16,3 +16,7 @@ type Core struct {
 	Status    string
 	Phone     string
 }
+
+type UserHandler interface {}
+type UserService interface {}
+type UserData interface {}
