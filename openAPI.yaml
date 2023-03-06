@@ -669,8 +669,301 @@ paths:
           $ref: "#/components/responses/400"
         500:
           $ref: "#/components/responses/500"
+    get:
+      tags:
+        - "class"
+      summary: "show all class"
+      description: "feature for show all class data by admin"
+      security:
+        - JWTAuth: []
+        parameters:
+        - name: name
+          description: "class name"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "BackEnd"
+        - name: batch
+          description: "class batch"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "15"
+        - name: start class
+          description: "start class date"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "06/03/2023"
+        - name: end class
+          description: "end class date"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "06/03/2023" 
+        - name: mentor
+          description: "mentor name"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "rachman kamil"
+        - name: limit
+          description: "limit"
+          required: false
+          in: query
+          schema:
+            type: integer
+            example: 10
+        - name: offset
+          description: "offset"
+          required: false
+          in: query
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: "show all Class data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObjectArr"
+              example:
+                data:
+                  - id: 1
+                    name: "Back End Engineer"
+                    batch: "14"
+                    start class: "06/03/2023"
+                    end class: "06/03/2023"
+                    mentor: "Rachman Kamil"
+                  - id: 2
+                    name: "Front End Engineer"
+                    batch: "14"
+                    start class: "06/03/2023"
+                    end class: "06/03/2023"
+                    mentor: "Rachman Kamil"
+                  - id: 3
+                    name: "Back End Engineer"
+                    batch: "15"
+                    start class: "06/03/2023"
+                    end class: "06/03/2023"
+                    mentor: "Rachman Kamil"
+                  - id: 4
+                    name: "Front End Engineer"
+                    batch: "15"
+                    start class: "06/03/2023"
+                    end class: "06/03/2023"
+                    mentor: "Rachman Kamil"
+                  - id: 5
+                    name: "Quality Assurance"
+                    batch: "15"
+                    start class: "06/03/2023"
+                    end class: "06/03/2023"
+                    mentor: "Rachman Kamil"
+                message: "success show all class"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
 
-      
+/class/{id}:
+    get:
+      tags:
+        - "class"
+      summary: "show class data by id"
+      description: "feature for show class data by id"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "show class data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  name: "Back End Engineer"
+                  batch: "14"
+                  start class: "06/03/2023"
+                  end class: "06/03/2023"
+                  mentor: "Rachman Kamil"
+                message: "success show class profile"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+    put:
+      tags:
+        - "user"
+      summary: "edit class data"
+      description: "feature for edit class data"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              name: "Back End Engineer"
+              batch: "14"
+              start class: "06/03/2023"
+              end class: "06/03/2023"
+              mentor: "Rachman Kamil"
+      responses:
+        200:
+          description: "update class"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                id: 2
+                name: "BackEnd"
+                batch: "14"
+                start class: "07/03/2023"
+                end class: "07/03/2023"
+                mentor: "fakhry"
+              message: "success update profile"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      tags:
+        - "user"
+      summary: "Delete class data"
+      description: "feature for delete class data"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "delete class data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                message: "success delete class data"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+
+/feedback:
+post:
+      tags:
+        - "feedback"
+      summary: "add new feedback"
+      description: "feature for adding new feedback"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id: 
+                  type: integer
+                mentee_id:
+                  type: integer
+                notes: 
+                  type: string
+                status:
+                  type: string
+            example:
+              user_id: 1
+              mentee_id: 1
+              notes: "keep going"
+              status: "continue section 2"
+      responses:
+        201:
+          description: "success add feedback"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                message: "success add feedback"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+ get:
+      tags:
+        - "class"
+      summary: "show feedback by id"
+      description: "feature for show feedback by id"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "show class data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  notes: "keep going"
+                  status: "continue section 2"
+                  user: {
+                    user_id: 1,
+                    name: "Rachman Kamil"
+                  }
+                  mentee: {
+                    mentee_id: 1,
+                    name: "Bambang Suwono"
+                  }
+                message: "success show feedback"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+
 components:
   schemas:
     responseObject:
