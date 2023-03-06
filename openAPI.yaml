@@ -627,7 +627,7 @@ paths:
           $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
-      
+
 components:
   schemas:
     responseObject:
