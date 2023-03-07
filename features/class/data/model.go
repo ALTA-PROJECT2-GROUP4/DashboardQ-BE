@@ -38,3 +38,12 @@ func ModelToCore(dataModel Class) class.Core {
 		IdUser:     dataModel.User.ID,
 	}
 }
+
+// mengubah dari list struct model ke struct core
+func ListModelToCore(dataModel []Class) []class.Core {
+	var dataCore []class.Core
+	for _, v := range dataModel {
+		dataCore = append(dataCore, ModelToCore(v))
+	}
+	return dataCore
+}
