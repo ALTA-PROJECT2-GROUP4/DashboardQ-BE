@@ -137,7 +137,7 @@ func (uq *userQuery) ShowAll() ([]users.Core, error) {
 // ShowAllAdm implements users.UserData
 func (uq *userQuery) ShowAllAdm() ([]users.Core, error) {
 	showall := []User{}
-	err := uq.db.Where("role = ?", "admin AND user").Find(&showall).Error
+	err := uq.db.Where("id = ?", "role = ?", "1", "user").Find(&showall).Error
 	if err != nil {
 		log.Println("data not found")
 		return []users.Core{}, errors.New("data not found")
