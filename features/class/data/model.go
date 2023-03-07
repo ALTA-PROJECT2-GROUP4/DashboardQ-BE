@@ -27,3 +27,14 @@ func CoreToModel(dataCore class.Core) Class {
 		IdUser:     dataCore.IdUser,
 	}
 }
+
+// mengubah dari struct model ke struct core
+func ModelToCore(dataModel Class) class.Core {
+	return class.Core{
+		ID:         dataModel.ID,
+		Name:       dataModel.Name,
+		StartClass: dataModel.StartClass,
+		EndClass:   dataModel.EndClass,
+		IdUser:     dataModel.User.ID,
+	}
+}
