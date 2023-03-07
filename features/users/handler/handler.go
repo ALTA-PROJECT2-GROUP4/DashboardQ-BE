@@ -4,6 +4,7 @@ import (
 	"dashboardq-be/features/users"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -13,9 +14,32 @@ type userHandler struct {
 	srv users.UserService
 }
 
+func New(srv users.UserService) users.UserHandler {
+	return &userHandler{
+		srv: srv,
+	}
+}
+
 // Deactive implements users.UserHandler
-func (*userHandler) Deactive() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) Deactive() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		token := c.Get("user")
+		paramID := c.Param("id")
+		userID, err := strconv.Atoi(paramID)
+		if err != nil {
+			log.Println("convert id error", err.Error())
+			return c.JSON(http.StatusBadGateway, "Invalid input")
+		}
+		err = uh.srv.Deactive(token, uint(userID))
+		if err != nil {
+			return c.JSON(http.StatusNotFound, map[string]interface{}{
+				"message": "data not found",
+			})
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"message": "success deactivate user profile",
+		})
+	}
 }
 
 // Login implements users.UserHandler
@@ -40,21 +64,45 @@ func (uh *userHandler) Login() echo.HandlerFunc {
 			}
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"data":             ToResponse(res),
-			"message":          "login success",
-			"token":            token,
+			"data":    ToResponse(res),
+			"message": "login success",
+			"token":   token,
 		})
 	}
 }
 
 // Profile implements users.UserHandler
-func (*userHandler) Profile() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) Profile() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		// eID := c.Param("id")
+		// userID, _ := strconv.Atoi(eID)
+		res, err := uh.srv.Profile(c.Get("user"))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
+		}
+
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    ToProfileResponse(res),
+			"message": "success show profile",
+		})
+	}
 }
 
 // ProfileAdm implements users.UserHandler
-func (*userHandler) ProfileAdm() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) ProfileAdm() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		eID := c.Param("id")
+		userID, _ := strconv.Atoi(eID)
+		res, err := uh.srv.ProfileAdm(uint(userID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
+		}
+
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    ToProfileResponse(res),
+			"message": "success show profile",
+		})
+	}
 }
 
 // Register implements users.UserHandler
@@ -86,8 +134,21 @@ func (uh *userHandler) Register() echo.HandlerFunc {
 }
 
 // ShowAll implements users.UserHandler
-func (*userHandler) ShowAll() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) ShowAll() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		res, err := uh.srv.ShowAll()
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
+		}
+		result := []ShowAllEmployee{}
+		for _, val := range res {
+			result = append(result, ShowAllEmployeeJson(val))
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    result,
+			"message": "success show all users",
+		})
+	}
 }
 
 // ShowAllAdm implements users.UserHandler
@@ -96,17 +157,87 @@ func (*userHandler) ShowAllAdm() echo.HandlerFunc {
 }
 
 // Update implements users.UserHandler
-func (*userHandler) Update() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) Update() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		input := RegisterReq{}
+		err := c.Bind(&input)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, "input format incorrect")
+		}
+
+		res, err := uh.srv.Update(c.Get("user"), *ReqToCore(input))
+		if err != nil {
+			if strings.Contains(err.Error(), "email") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "email already used"})
+			} else if strings.Contains(err.Error(), "is not min") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "validate: password length minimum 3 character"})
+			} else if strings.Contains(err.Error(), "type") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": err.Error()})
+			} else if strings.Contains(err.Error(), "access denied") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "access denied"})
+			} else if strings.Contains(err.Error(), "validate") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": err.Error()})
+			} else if strings.Contains(err.Error(), "not registered") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": err.Error()})
+			} else {
+				return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "unable to process data"})
+			}
+		}
+
+		result, err := ConvertEmployeeUpdateResponse(res)
+		if err != nil {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"message": err.Error(),
+			})
+		} else {
+			// log.Println(res)
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"data":    result,
+				"message": "success update user profile",
+			})
+		}
+
+	}
 }
 
 // UpdateAdm implements users.UserHandler
-func (*userHandler) UpdateAdm() echo.HandlerFunc {
-	panic("unimplemented")
-}
-
-func New(srv users.UserService) users.UserHandler {
-	return &userHandler{
-		srv: srv,
+func (uh *userHandler) UpdateAdm() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		uID := c.Param("id")
+		userID, _ := strconv.Atoi(uID)
+		input := RegisterReq{}
+		err := c.Bind(&input)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, "input format incorrect")
+		}
+		
+		res, err := uh.srv.UpdateAdm(c.Get("user"), uint(userID), *ReqToCore(input))
+		if err != nil {
+			if strings.Contains(err.Error(), "email duplicated") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "email already used"})
+			} else if strings.Contains(err.Error(), "type") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": err.Error()})
+			} else if strings.Contains(err.Error(), "is not min") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "validate: password length minimum 3 character"})
+			} else if strings.Contains(err.Error(), "access") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": err.Error()})
+			} else if strings.Contains(err.Error(), "validate") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": err.Error()})
+			} else {
+				return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "account not registered"})
+			}
+		}
+		result, err := ConvertUpdateResponse(res)
+		if err != nil {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"message": err.Error(),
+			})
+		} else {
+			// log.Println(res)
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"data":    result,
+				"message": "update profile success",
+			})
+		}
 	}
 }
