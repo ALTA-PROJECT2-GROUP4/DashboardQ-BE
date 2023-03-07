@@ -21,8 +21,25 @@ func New(srv users.UserService) users.UserHandler {
 }
 
 // Deactive implements users.UserHandler
-func (*userHandler) Deactive() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) Deactive() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		token := c.Get("user")
+		paramID := c.Param("id")
+		userID, err := strconv.Atoi(paramID)
+		if err != nil {
+			log.Println("convert id error", err.Error())
+			return c.JSON(http.StatusBadGateway, "Invalid input")
+		}
+		err = uh.srv.Deactive(token, uint(userID))
+		if err != nil {
+			return c.JSON(http.StatusNotFound, map[string]interface{}{
+				"message": "data not found",
+			})
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"message": "success deactivate user profile",
+		})
+	}
 }
 
 // Login implements users.UserHandler
