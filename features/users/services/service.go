@@ -22,7 +22,6 @@ func New(ud users.UserData) users.UserService {
 	}
 }
 
-
 // Deactive implements users.UserService
 func (*userService) Deactive(token interface{}, userID uint) error {
 	panic("unimplemented")
@@ -59,8 +58,14 @@ func (us *userService) Login(email string, password string) (string, users.Core,
 }
 
 // Profile implements users.UserService
-func (*userService) Profile(token interface{}) (users.Core, error) {
-	panic("unimplemented")
+func (us *userService) Profile(token interface{}) (users.Core, error) {
+	userID := helper.ExtractToken(token)
+	res, err := us.qry.Profile(uint(userID))
+	if err != nil {
+		log.Println("data not found")
+		return users.Core{}, errors.New("query error, problem with server")
+	}
+	return res, nil
 }
 
 // ProfileAdm implements users.UserService
@@ -71,7 +76,7 @@ func (*userService) ProfileAdm(userID uint) (users.Core, error) {
 // Register implements users.UserService
 func (us *userService) Register(token interface{}, newUser users.Core) (users.Core, error) {
 	adminID := helper.ExtractToken(token)
-	
+
 	hashed := helper.GeneratePassword(newUser.Password)
 	newUser.Password = string(hashed)
 
