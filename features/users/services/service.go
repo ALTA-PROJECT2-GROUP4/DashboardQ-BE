@@ -118,8 +118,13 @@ func (us *userService) ShowAll() ([]users.Core, error) {
 }
 
 // ShowAllAdm implements users.UserService
-func (*userService) ShowAllAdm() ([]users.Core, error) {
-	panic("unimplemented")
+func (us *userService) ShowAllAdm() ([]users.Core, error) {
+	res, err := us.qry.ShowAllAdm()
+	if err != nil {
+		log.Println("data not found", err.Error())
+		return []users.Core{}, errors.New("data not found")
+	}
+	return res, nil
 }
 
 // Update implements users.UserService
