@@ -65,8 +65,8 @@ func (uh *userHandler) Login() echo.HandlerFunc {
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"data":    ToResponse(res),
-			"message": "login success",
 			"token":   token,
+			"message": "login success",
 		})
 	}
 }
