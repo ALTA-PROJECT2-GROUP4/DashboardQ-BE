@@ -102,8 +102,13 @@ func (us *userService) Register(token interface{}, newUser users.Core) (users.Co
 }
 
 // ShowAll implements users.UserService
-func (*userService) ShowAll() ([]users.Core, error) {
-	panic("unimplemented")
+func (us *userService) ShowAll() ([]users.Core, error) {
+	res, err := us.qry.ShowAll()
+	if err != nil {
+		log.Println("data not found", err.Error())
+		return []users.Core{}, errors.New("data not found")
+	}
+	return res, nil
 }
 
 // ShowAllAdm implements users.UserService
@@ -136,10 +141,10 @@ func (us *userService) Update(token interface{}, newUpdate users.Core) (users.Co
 // UpdateAdm implements users.UserService
 func (us *userService) UpdateAdm(token interface{}, userID uint, newUpdate users.Core) (users.Core, error) {
 	adminID := helper.ExtractToken(token)
-	
+
 	hashed := helper.GeneratePassword(newUpdate.Password)
 	newUpdate.Password = hashed
-	
+
 	res, err := us.qry.UpdateAdm(uint(adminID), userID, newUpdate)
 	if err != nil {
 		msg := ""
