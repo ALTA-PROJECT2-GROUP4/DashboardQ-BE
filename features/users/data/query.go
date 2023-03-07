@@ -122,7 +122,7 @@ func (uq *userQuery) Register(adminID uint, newUser users.Core) (users.Core, err
 // ShowAll implements users.UserData
 func (uq *userQuery) ShowAll() ([]users.Core, error) {
 	getall := []User{}
-	err := uq.db.Where("role = ?", "users").Find(&getall).Error
+	err := uq.db.Where("role = ?", "user").Find(&getall).Error
 	if err != nil {
 		log.Println("data not found")
 		return []users.Core{}, errors.New("data not found")
