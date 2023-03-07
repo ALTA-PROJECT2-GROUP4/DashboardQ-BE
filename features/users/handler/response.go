@@ -1,6 +1,9 @@
 package handler
 
-import "dashboardq-be/features/users"
+import (
+	"dashboardq-be/features/users"
+	"errors"
+)
 
 type RegResp struct {
 }
@@ -132,4 +135,65 @@ func ShowAllUserJson(data users.Core) ShowAllUser {
 		Team:  data.Team,
 		Role:  data.Role,
 	}
+}
+
+func ConvertUserUpdateResponse(inputan users.Core) (interface{}, error) {
+	ResponseFilter := users.Core{}
+	ResponseFilter = inputan
+	result := make(map[string]interface{})
+	if ResponseFilter.ID != 0 {
+		result["id"] = ResponseFilter.ID
+	}
+	if ResponseFilter.Email != "" {
+		result["email"] = ResponseFilter.Email
+	}
+	if ResponseFilter.Password != "" {
+		result["password"] = ResponseFilter.Password
+	}
+
+	if len(result) <= 1 {
+		return users.Core{}, errors.New("no data was change")
+	}
+	return result, nil
+}
+
+func ConvertUpdateResponse(inputan users.Core) (interface{}, error) {
+	ResponseFilter := users.Core{}
+	ResponseFilter = inputan
+	result := make(map[string]interface{})
+	if ResponseFilter.ID != 0 {
+		result["id"] = ResponseFilter.ID
+	}
+	if ResponseFilter.Role != "" {
+		result["email"] = ResponseFilter.Role
+	}
+	if ResponseFilter.Name != "" {
+		result["name"] = ResponseFilter.Name
+	}
+	if ResponseFilter.DateBirth != "" {
+		result["birth_of_date"] = ResponseFilter.DateBirth
+	}
+	if ResponseFilter.Email != "" {
+		result["email"] = ResponseFilter.Email
+	}
+	if ResponseFilter.Gender != "" {
+		result["gender"] = ResponseFilter.Gender
+	}
+	if ResponseFilter.Team != "" {
+		result["position"] = ResponseFilter.Team
+	}
+	if ResponseFilter.Phone != "" {
+		result["phone"] = ResponseFilter.Phone
+	}
+	if ResponseFilter.Address != "" {
+		result["address"] = ResponseFilter.Address
+	}
+	if ResponseFilter.Password != "" {
+		result["password"] = ResponseFilter.Password
+	}
+
+	if len(result) <= 1 {
+		return users.Core{}, errors.New("no data was change")
+	}
+	return result, nil
 }
