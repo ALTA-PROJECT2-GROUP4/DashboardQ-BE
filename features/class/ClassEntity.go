@@ -9,7 +9,7 @@ type Core struct {
 	Name       string
 	StartClass string
 	EndClass   string
-	IdUser     string
+	IdUser     uint
 }
 
 type ClassHandler interface {
