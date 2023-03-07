@@ -4,6 +4,7 @@ import (
 	"dashboardq-be/features/users"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -51,7 +52,7 @@ func (uh *userHandler) Login() echo.HandlerFunc {
 func (uh *userHandler) Profile() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// eID := c.Param("id")
-		// employeeID, _ := strconv.Atoi(eID)
+		// userID, _ := strconv.Atoi(eID)
 		res, err := uh.srv.Profile(c.Get("user"))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
@@ -65,8 +66,20 @@ func (uh *userHandler) Profile() echo.HandlerFunc {
 }
 
 // ProfileAdm implements users.UserHandler
-func (*userHandler) ProfileAdm() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) ProfileAdm() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		eID := c.Param("id")
+		userID, _ := strconv.Atoi(eID)
+		res, err := uh.srv.ProfileAdm(uint(userID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
+		}
+
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    ToProfileResponse(res),
+			"message": "success show profile",
+		})
+	}
 }
 
 // Register implements users.UserHandler
