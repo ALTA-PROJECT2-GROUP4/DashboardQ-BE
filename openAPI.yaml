@@ -57,7 +57,7 @@ paths:
               example:
                 data:
                   id: 6
-                  full_name: "alfian aditya"
+                  name: "alfian aditya"
                   email: "alfian@example.com"
                   gender: "Male"
                   role: "User"
@@ -102,8 +102,6 @@ paths:
                   type: string
                 team:
                   type: string
-                status:
-                  type: string
                 phone:
                   type: string
                 password:
@@ -117,7 +115,6 @@ paths:
               address: "jln. Merpati No 18, Kasihan, Bantul, Yogyakarta, 55184"
               role: "User"
               team: "Academy"
-              status: "Active"
               phone: "0812334455"
               password: "alifganteng"
       responses:
@@ -170,13 +167,6 @@ paths:
           schema:
             type: string
             example: "User"
-        - name: status
-          description: "user status"
-          required: false
-          in: query
-          schema:
-            type: string
-            example: "Active"
         - name: limit
           description: "limit"
           required: false
@@ -205,25 +195,21 @@ paths:
                     email: "azure@example.com"
                     team: "Admission"
                     role: "User"
-                    status: "Active"
                   - id: 3
                     name: "Muhammad Arnold"
                     email: "marnold@example.com"
                     team: "Placement"
                     role: "User"
-                    status: "Active"
                   - id: 4
                     name: "Beni Kurnia"
                     email: "benkur@example.com"
                     team: "Mentor"
                     role: "User"
-                    status: "Active"
                   - id: 5
                     name: "Miranda Ramadhan"
                     email: "miranda@example.com"
                     team: "Placement"
                     role: "User"
-                    status: "Non-Active"
         400:
           $ref: "#/components/responses/400"
         500:
@@ -260,11 +246,56 @@ paths:
                   address: "Bantul, Yogyakarta, 55184"
                   role: "User"
                   team: "Academy"
-                  status: "Active"
                   phone: "0812334455"
                 message: "success show profile"
         400:
           $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+
+    put:
+      tags:
+        - "user"
+      summary: "edit user profile"
+      description: "feature for edit user profile"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              name: "Azura Namini"
+              email: "azure@example.com"
+              team: "Placement"
+              role: "User"
+      responses:
+        200:
+          description: "update profile"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 2
+                  name: "Azura Namini"
+                  email: "azure@example.com"
+                  team: "Placement"
+                  role: "User"
+                message: "success update profile"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
           
@@ -305,13 +336,6 @@ paths:
           schema:
             type: string
             example: "User"
-        - name: status
-          description: "user status"
-          required: false
-          in: query
-          schema:
-            type: string
-            example: "Active"
         - name: limit
           description: "limit"
           required: false
@@ -340,25 +364,21 @@ paths:
                     email: "azure@example.com"
                     team: "Admission"
                     role: "User"
-                    status: "Active"
                   - id: 3
                     name: "Muhammad Arnold"
                     email: "marnold@example.com"
                     team: "Placement"
                     role: "User"
-                    status: "Active"
                   - id: 4
                     name: "Beni Kurnia"
                     email: "benkur@example.com"
                     team: "Mentor"
                     role: "User"
-                    status: "Active"
                   - id: 5
                     name: "Miranda Ramadhan"
                     email: "miranda@example.com"
                     team: "Placement"
                     role: "User"
-                    status: "Non-Active"
         400:
           $ref: "#/components/responses/400"
         500:
@@ -367,7 +387,7 @@ paths:
   /users/{user_id}:
     put:
       tags:
-        - "user"
+        - "admin"
       summary: "edit user profile"
       description: "feature for edit user profile"
       security:
@@ -389,7 +409,6 @@ paths:
               email: "azure@example.com"
               team: "Placement"
               role: "User"
-              status: "Active"
       responses:
         200:
           description: "update profile"
@@ -404,7 +423,6 @@ paths:
                   email: "azure@example.com"
                   team: "Placement"
                   role: "User"
-                  status: "Active"
                 message: "success update profile"
         400:
           $ref: "#/components/responses/400"
@@ -442,7 +460,6 @@ paths:
                   address: "Bantul, Yogyakarta, 55184"
                   role: "User"
                   team: "Academy"
-                  status: "Active"
                   phone: "0812334455"
                 message: "success show profile"
         400:
@@ -453,7 +470,7 @@ paths:
           $ref: "#/components/responses/500"
     delete:
       tags:
-        - "user"
+        - "admin"
       summary: "deactive user account"
       description: "feature for deactive user account"
       security:
@@ -1143,7 +1160,7 @@ components:
               message:
                 type: string
           example:
-            message: "wrong input"
+            message: "bad request"
     404:
       description: "data not found"
       content:
@@ -1154,7 +1171,7 @@ components:
               message:
                 type: string
           example:
-            message: "account not registered"
+            message: "data not registered"
     500:
       description: "error from server"
       content:
@@ -1165,4 +1182,4 @@ components:
               message:
                 type: string
             example:
-              message: "server problem"
+              message: "internal server error"
