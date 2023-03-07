@@ -1,6 +1,9 @@
 package handler
 
-import "dashboardq-be/features/users"
+import (
+	"dashboardq-be/features/users"
+	"errors"
+)
 
 type RegResp struct {
 }
@@ -48,4 +51,149 @@ func ToResponseUpd(data users.Core) UpdateUserResp {
 		Team:   data.Team,
 		Status: data.Status,
 	}
+}
+
+type ProfileResponse struct {
+	ID        uint   `json:"id"`
+	Name      string `json:"name"`
+	DateBirth string `json:"date_birth"`
+	Role      string `json:"role"`
+	Email     string `json:"email"`
+	Gender    string `json:"gender"`
+	Team      string `json:"team"`
+	Phone     string `json:"phone"`
+	Address   string `json:"address"`
+}
+
+func ToProfileResponse(data users.Core) ProfileResponse {
+	return ProfileResponse{
+		ID:        data.ID,
+		Name:      data.Name,
+		DateBirth: data.DateBirth,
+		Email:     data.Email,
+		Role:      data.Role,
+		Gender:    data.Gender,
+		Team:      data.Team,
+		Phone:     data.Phone,
+		Address:   data.Address,
+	}
+}
+
+type UpdateResponse struct {
+	ID        uint   `json:"id"`
+	Name      string `json:"name" form:"name"`
+	DateBirth string `json:"date_birth" form:"date_birth"`
+	Email     string `json:"email" form:"email"`
+	Gender    string `json:"gender" form:"gender"`
+	Team      string `json:"team" form:"team"`
+	Phone     string `json:"phone" form:"phone"`
+	Address   string `json:"address" form:"address"`
+	Password  string `json:"password" form:"password"`
+}
+
+func ToUpdateResponse(data users.Core) UpdateResponse {
+	return UpdateResponse{
+		ID:        data.ID,
+		Name:      data.Name,
+		DateBirth: data.DateBirth,
+		Email:     data.Email,
+		Gender:    data.Gender,
+		Team:      data.Team,
+		Phone:     data.Phone,
+		Address:   data.Address,
+		Password:  data.Password,
+	}
+}
+
+type UpdateResponseUser struct {
+	ID       uint   `json:"id"`
+	Email    string `json:"email"`
+	Password string `json:"password" form:"password"`
+}
+
+func ToUpdateResponseUser(data users.Core) UpdateResponseUser {
+	return UpdateResponseUser{
+		ID:       data.ID,
+		Email:    data.Email,
+		Password: data.Password,
+	}
+}
+
+type ShowAllUser struct {
+	ID    uint   `json:"id"`
+	Email string `json:"email"`
+	Name  string `json:"name"`
+	Team  string `json:"team"`
+	Role  string `json:"role"`
+}
+
+func ShowAllUserJson(data users.Core) ShowAllUser {
+	return ShowAllUser{
+		ID:    data.ID,
+		Email: data.Email,
+		Name:  data.Name,
+		Team:  data.Team,
+		Role:  data.Role,
+	}
+}
+
+func ConvertUserUpdateResponse(inputan users.Core) (interface{}, error) {
+	ResponseFilter := users.Core{}
+	ResponseFilter = inputan
+	result := make(map[string]interface{})
+	if ResponseFilter.ID != 0 {
+		result["id"] = ResponseFilter.ID
+	}
+	if ResponseFilter.Email != "" {
+		result["email"] = ResponseFilter.Email
+	}
+	if ResponseFilter.Password != "" {
+		result["password"] = ResponseFilter.Password
+	}
+
+	if len(result) <= 1 {
+		return users.Core{}, errors.New("no data was change")
+	}
+	return result, nil
+}
+
+func ConvertUpdateResponse(inputan users.Core) (interface{}, error) {
+	ResponseFilter := users.Core{}
+	ResponseFilter = inputan
+	result := make(map[string]interface{})
+	if ResponseFilter.ID != 0 {
+		result["id"] = ResponseFilter.ID
+	}
+	if ResponseFilter.Role != "" {
+		result["email"] = ResponseFilter.Role
+	}
+	if ResponseFilter.Name != "" {
+		result["name"] = ResponseFilter.Name
+	}
+	if ResponseFilter.DateBirth != "" {
+		result["birth_of_date"] = ResponseFilter.DateBirth
+	}
+	if ResponseFilter.Email != "" {
+		result["email"] = ResponseFilter.Email
+	}
+	if ResponseFilter.Gender != "" {
+		result["gender"] = ResponseFilter.Gender
+	}
+	if ResponseFilter.Team != "" {
+		result["position"] = ResponseFilter.Team
+	}
+	if ResponseFilter.Phone != "" {
+		result["phone"] = ResponseFilter.Phone
+	}
+	if ResponseFilter.Address != "" {
+		result["address"] = ResponseFilter.Address
+	}
+	if ResponseFilter.Password != "" {
+		result["password"] = ResponseFilter.Password
+	}
+
+	if len(result) <= 1 {
+		return users.Core{}, errors.New("no data was change")
+	}
+	return result, nil
 }
