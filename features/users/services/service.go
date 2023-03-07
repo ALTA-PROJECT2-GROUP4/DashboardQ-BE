@@ -23,8 +23,14 @@ func New(ud users.UserData) users.UserService {
 }
 
 // Deactive implements users.UserService
-func (*userService) Deactive(token interface{}, userID uint) error {
-	panic("unimplemented")
+func (us *userService) Deactive(token interface{}, userID uint) error {
+	id := helper.ExtractToken(token)
+	err := us.qry.Deactive(uint(id), userID)
+	if err != nil {
+		log.Println("query error", err.Error())
+		return errors.New("query error, delete account fail")
+	}
+	return nil
 }
 
 // Login implements users.UserService
