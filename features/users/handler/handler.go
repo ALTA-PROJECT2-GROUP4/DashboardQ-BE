@@ -152,8 +152,21 @@ func (uh *userHandler) ShowAll() echo.HandlerFunc {
 }
 
 // ShowAllAdm implements users.UserHandler
-func (*userHandler) ShowAllAdm() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) ShowAllAdm() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		res, err := uh.srv.ShowAllAdm()
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
+		}
+		result := []ShowAllUser{}
+		for _, val := range res {
+			result = append(result, ShowAllUserJson(val))
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    result,
+			"message": "success show all users",
+		})
+	}
 }
 
 // Update implements users.UserHandler
