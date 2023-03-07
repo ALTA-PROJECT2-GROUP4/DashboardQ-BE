@@ -55,8 +55,14 @@ func (uq *userQuery) Profile(userID uint) (users.Core, error) {
 }
 
 // ProfileAdm implements users.UserData
-func (*userQuery) ProfileAdm(userID uint) (users.Core, error) {
-	panic("unimplemented")
+func (uq *userQuery) ProfileAdm(userID uint) (users.Core, error) {
+	res := User{}
+	err := uq.db.Where("id = ?", userID).First(&res).Error
+	if err != nil {
+		log.Println("query err", err.Error())
+		return users.Core{}, errors.New("account not found")
+	}
+	return ModelToCore(res), nil
 }
 
 // Register implements users.UserData
