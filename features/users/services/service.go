@@ -107,8 +107,25 @@ func (*userService) ShowAllAdm() ([]users.Core, error) {
 }
 
 // Update implements users.UserService
-func (*userService) Update(token interface{}, newUpdate users.Core) (users.Core, error) {
-	panic("unimplemented")
+func (us *userService) Update(token interface{}, newUpdate users.Core) (users.Core, error) {
+	employeeID := helper.ExtractToken(token)
+
+	hashed := helper.GeneratePassword(newUpdate.Password)
+	newUpdate.Password = string(hashed)
+
+	res, err := us.qry.Update(uint(employeeID), newUpdate)
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "account not registered"
+		} else if strings.Contains(err.Error(), "email") {
+			msg = "email duplicated"
+		} else if strings.Contains(err.Error(), "access denied") {
+			msg = "access denied"
+		}
+		return users.Core{}, errors.New(msg)
+	}
+	return res, nil
 }
 
 // UpdateAdm implements users.UserService
