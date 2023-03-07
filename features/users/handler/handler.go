@@ -140,9 +140,9 @@ func (uh *userHandler) ShowAll() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
 		}
-		result := []ShowAllEmployee{}
+		result := []ShowAllUser{}
 		for _, val := range res {
-			result = append(result, ShowAllEmployeeJson(val))
+			result = append(result, ShowAllUserJson(val))
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"data":    result,
@@ -184,7 +184,7 @@ func (uh *userHandler) Update() echo.HandlerFunc {
 			}
 		}
 
-		result, err := ConvertEmployeeUpdateResponse(res)
+		result, err := ConvertUserUpdateResponse(res)
 		if err != nil {
 			return c.JSON(http.StatusOK, map[string]interface{}{
 				"message": err.Error(),
