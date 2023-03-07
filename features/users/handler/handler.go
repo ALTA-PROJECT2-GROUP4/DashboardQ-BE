@@ -40,16 +40,28 @@ func (uh *userHandler) Login() echo.HandlerFunc {
 			}
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"data":             ToResponse(res),
-			"message":          "login success",
-			"token":            token,
+			"data":    ToResponse(res),
+			"message": "login success",
+			"token":   token,
 		})
 	}
 }
 
 // Profile implements users.UserHandler
-func (*userHandler) Profile() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) Profile() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		// eID := c.Param("id")
+		// employeeID, _ := strconv.Atoi(eID)
+		res, err := uh.srv.Profile(c.Get("user"))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
+		}
+
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    ToProfileResponse(res),
+			"message": "success show profile",
+		})
+	}
 }
 
 // ProfileAdm implements users.UserHandler
