@@ -108,12 +108,12 @@ func (*userService) ShowAllAdm() ([]users.Core, error) {
 
 // Update implements users.UserService
 func (us *userService) Update(token interface{}, newUpdate users.Core) (users.Core, error) {
-	employeeID := helper.ExtractToken(token)
+	userID := helper.ExtractToken(token)
 
 	hashed := helper.GeneratePassword(newUpdate.Password)
 	newUpdate.Password = string(hashed)
 
-	res, err := us.qry.Update(uint(employeeID), newUpdate)
+	res, err := us.qry.Update(uint(userID), newUpdate)
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
@@ -129,6 +129,25 @@ func (us *userService) Update(token interface{}, newUpdate users.Core) (users.Co
 }
 
 // UpdateAdm implements users.UserService
-func (*userService) UpdateAdm(token interface{}, userID uint, newUpdate users.Core) (users.Core, error) {
-	panic("unimplemented")
+func (us *userService) UpdateAdm(token interface{}, userID uint, newUpdate users.Core) (users.Core, error) {
+	adminID := helper.ExtractToken(token)
+	
+	hashed := helper.GeneratePassword(newUpdate.Password)
+	newUpdate.Password = hashed
+	
+	res, err := us.qry.UpdateAdm(uint(adminID), userID, newUpdate)
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "access") {
+			msg = "access denied"
+		} else if strings.Contains(err.Error(), "not found") {
+			msg = "account not registered"
+		} else if strings.Contains(err.Error(), "email") {
+			msg = "email duplicated"
+		} else {
+			msg = err.Error()
+		}
+		return users.Core{}, errors.New(msg)
+	}
+	return res, nil
 }
