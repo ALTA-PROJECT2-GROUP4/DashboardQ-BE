@@ -77,8 +77,18 @@ func (uq *userQuery) Register(adminID uint, newUser users.Core) (users.Core, err
 }
 
 // ShowAll implements users.UserData
-func (*userQuery) ShowAll() ([]users.Core, error) {
-	panic("unimplemented")
+func (uq *userQuery) ShowAll() ([]users.Core, error) {
+	getall := []User{}
+	err := uq.db.Where("role = ?", "users").Find(&getall).Error
+	if err != nil {
+		log.Println("data not found")
+		return []users.Core{}, errors.New("data not found")
+	}
+	result := []users.Core{}
+	for _, val := range getall {
+		result = append(result, ModelToCore(val))
+	}
+	return result, nil
 }
 
 // ShowAllAdm implements users.UserData
