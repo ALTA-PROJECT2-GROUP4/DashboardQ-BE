@@ -40,8 +40,18 @@ func (uq *userQuery) Login(email string) (users.Core, error) {
 }
 
 // Profile implements users.UserData
-func (*userQuery) Profile(userID uint) (users.Core, error) {
-	panic("unimplemented")
+func (uq *userQuery) Profile(userID uint) (users.Core, error) {
+	if userID == 1 {
+		log.Println("cannot access admin data")
+		return users.Core{}, errors.New("cannot access admin data")
+	}
+	res := User{}
+	err := uq.db.Where("id = ?", userID).First(&res).Error
+	if err != nil {
+		log.Println("query err", err.Error())
+		return users.Core{}, errors.New("account not found")
+	}
+	return ModelToCore(res), nil
 }
 
 // ProfileAdm implements users.UserData
