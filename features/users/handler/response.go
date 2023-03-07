@@ -49,3 +49,55 @@ func ToResponseUpd(data users.Core) UpdateUserResp {
 		Status: data.Status,
 	}
 }
+
+type ProfileResponse struct {
+	ID        uint   `json:"id"`
+	Name      string `json:"name"`
+	DateBirth string `json:"date_birth"`
+	Role      string `json:"role"`
+	Email     string `json:"email"`
+	Gender    string `json:"gender"`
+	Team      string `json:"team"`
+	Phone     string `json:"phone"`
+	Address   string `json:"address"`
+}
+
+func ToProfileResponse(data users.Core) ProfileResponse {
+	return ProfileResponse{
+		ID:        data.ID,
+		Name:      data.Name,
+		DateBirth: data.DateBirth,
+		Email:     data.Email,
+		Role:      data.Role,
+		Gender:    data.Gender,
+		Team:      data.Team,
+		Phone:     data.Phone,
+		Address:   data.Address,
+	}
+}
+
+type UpdateResponse struct {
+	ID        uint   `json:"id"`
+	Name      string `json:"name" form:"name"`
+	DateBirth string `json:"date_birth" form:"date_birth"`
+	Email     string `json:"email" form:"email"`
+	Gender    string `json:"gender" form:"gender"`
+	Team      string `json:"team" form:"team"`
+	Phone     string `json:"phone" form:"phone"`
+	Address   string `json:"address" form:"address"`
+	Password  string `json:"password" form:"password"`
+}
+
+func ToUpdateResponse(data users.Core) UpdateResponse {
+	return UpdateResponse{
+		ID:        data.ID,
+		Name:      data.Name,
+		DateBirth: data.DateBirth,
+		Email:     data.Email,
+		Gender:    data.Gender,
+		Team:      data.Team,
+		Phone:     data.Phone,
+		Address:   data.Address,
+		Password:  data.Password,
+	}
+}
