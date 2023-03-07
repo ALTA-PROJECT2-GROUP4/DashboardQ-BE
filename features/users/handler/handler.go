@@ -184,6 +184,43 @@ func (uh *userHandler) Update() echo.HandlerFunc {
 }
 
 // UpdateAdm implements users.UserHandler
-func (*userHandler) UpdateAdm() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) UpdateAdm() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		uID := c.Param("id")
+		userID, _ := strconv.Atoi(uID)
+		input := RegisterReq{}
+		err := c.Bind(&input)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, "input format incorrect")
+		}
+		
+		res, err := uh.srv.UpdateAdm(c.Get("user"), uint(userID), *ReqToCore(input))
+		if err != nil {
+			if strings.Contains(err.Error(), "email duplicated") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "email already used"})
+			} else if strings.Contains(err.Error(), "type") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": err.Error()})
+			} else if strings.Contains(err.Error(), "is not min") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "validate: password length minimum 3 character"})
+			} else if strings.Contains(err.Error(), "access") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": err.Error()})
+			} else if strings.Contains(err.Error(), "validate") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": err.Error()})
+			} else {
+				return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "account not registered"})
+			}
+		}
+		result, err := ConvertUpdateResponse(res)
+		if err != nil {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"message": err.Error(),
+			})
+		} else {
+			// log.Println(res)
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"data":    result,
+				"message": "update profile success",
+			})
+		}
+	}
 }
