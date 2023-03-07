@@ -101,3 +101,35 @@ func ToUpdateResponse(data users.Core) UpdateResponse {
 		Password:  data.Password,
 	}
 }
+
+type UpdateResponseUser struct {
+	ID       uint   `json:"id"`
+	Email    string `json:"email"`
+	Password string `json:"password" form:"password"`
+}
+
+func ToUpdateResponseUser(data users.Core) UpdateResponseUser {
+	return UpdateResponseUser{
+		ID:       data.ID,
+		Email:    data.Email,
+		Password: data.Password,
+	}
+}
+
+type ShowAllUser struct {
+	ID    uint   `json:"id"`
+	Email string `json:"email"`
+	Name  string `json:"name"`
+	Team  string `json:"team"`
+	Role  string `json:"role"`
+}
+
+func ShowAllUserJson(data users.Core) ShowAllUser {
+	return ShowAllUser{
+		ID:    data.ID,
+		Email: data.Email,
+		Name:  data.Name,
+		Team:  data.Team,
+		Role:  data.Role,
+	}
+}
