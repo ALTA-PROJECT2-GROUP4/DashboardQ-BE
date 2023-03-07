@@ -521,6 +521,8 @@ paths:
                   type: string
                 address:
                   type: string
+                home_address:
+                  type: string
                 gender:
                   type: string
                 telegram:
@@ -531,19 +533,35 @@ paths:
                   type: string
                 status:
                   type: string
-                category:
+                emergency_name:
+                  type: string
+                emergency_phone:
+                  type: string
+                emergency_status:
+                  type: string
+                education_category:
+                  type: string
+                education_major:
+                  type: string
+                education_graduate:
                   type: string
             example:
               name: "Susilo Ahmad"
               email: "susiloahmd@example.com"
               birth_date: "1995-12-03"
               address: "Ubud, Bali"
+              home_address: "Bali"
               gender: "Male"
               telegram: "08211223344"
               phone: "08211223344"
               class: "BE Batch 10"
               status: "Active"
-              category: "Non-IT"
+              emergency_name: "Mbah Susi"
+              emergency_phone: "08111236025"
+              emergency_status: "other family"
+              education_category: "Non-IT"
+              education_major: "S1"
+              education_graduate: "Elektronika"
       responses:
         201:
           description: "add mentee data"
@@ -587,6 +605,13 @@ paths:
           schema:
             type: string
             example: "Active"
+        - name: education_category
+          description: "mentee education category"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "IT"
         - name: gender
           description: "mentee gender"
           required: false
@@ -621,31 +646,31 @@ paths:
                     name: "Susilo Ahmad"
                     class: "BE 10"
                     status: "Active"
-                    category: "Non-IT"
+                    education_category: "Non-IT"
                     gender: "Male"
                   - id: 2
                     name: "Gigih Prakosa"
                     class:  "BE Batch 9"
                     status: "Active"
-                    category: "IT"
+                    education_category: "IT"
                     gender: "Male"
                   - id: 3
                     name: "Veronica Ayu"
                     class: "FE Batch 9"
                     status: "Garduated"
-                    category:  "IT"
+                    education_category:  "IT"
                     gender: "Female"
                   - id: 4
                     name: "Nabila Hanifa"
                     class:  "FE 8"
                     status: "Gradueted"
-                    category: "Non-IT"
+                    education_category: "Non-IT"
                     gender: "Female"
                   - id: 5
                     name: "Akbar Rasyid"
                     class: "QE Batch 10"
                     status: "Eliminated"
-                    category: "Non-IT"
+                    education_category: "Non-IT"
                     gender: "Male"
                 message: "success show all mentee"
         400:
@@ -653,7 +678,7 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-  /mentee/{mentee_id}:
+  /mentee/{section}:
     get:
       tags:
         - "mentee"
@@ -662,7 +687,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: mentee_id
+        - name: section
           in: path
           required: true
           schema:
@@ -681,12 +706,18 @@ paths:
                   email: "susiloahmd@example.com"
                   birth_date: "1995-12-03"
                   address: "Ubud, Bali"
+                  home_address: "Bali"
                   gender: "Male"
                   telegram: "08211223344"
                   phone: "08211223344"
                   class: "BE Batch 10"
                   status: "Active"
-                  category: "Non-IT"
+                  emergency_name: "Mbah Susi"
+                  emergency_phone: "08111236025"
+                  emergency_status: "other family"
+                  education_category: "Non-IT"
+                  education_major: "S1"
+                  education_graduate: "Elektronika"
                 message: "success show mentee profile"
         400:
           $ref: "#/components/responses/400"
@@ -702,7 +733,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: mentee_id
+        - name: section
           in: path
           required: true
           schema:
@@ -714,16 +745,22 @@ paths:
             schema:
               type: object
             example:
-              name: "Susilo Ahmad"
-              email: "susiloahmd@example.com"
-              birth_date: "1995-12-03"
-              address: "Ubud, Bali"
-              gender: "Male"
-              telegram: "08211223344"
-              phone: "08211223344"
-              class: "BE Batch 10"
-              status: "Graduated"
-              category: "Non-IT"
+               name: "Susilo Ahmad"
+               email: "susiloahmd@example.com"
+               birth_date: "1995-12-03"
+               address: "Ubud, Bali"
+               home_address: "Bali"
+               gender: "Male"
+               telegram: "08211223344"
+               phone: "08211223344"
+               class: "BE Batch 10"
+               status: "Active"
+               emergency_name: "Mbah Susi"
+               emergency_phone: "08111236025"
+               emergency_status: "other family"
+               education_category: "Non-IT"
+               education_major: "S1"
+               education_graduate: "Elektronika"
       responses:
         200:
           description: "update mentee data"
@@ -738,12 +775,18 @@ paths:
                   email: "susiloahmd@example.com"
                   birth_date: "1995-12-03"
                   address: "Ubud, Bali"
+                  home_address: "Bali"
                   gender: "Male"
                   telegram: "08211223344"
                   phone: "08211223344"
                   class: "BE Batch 10"
-                  status: "Graduated"
-                  category: "Non-IT"
+                  status: "Active"
+                  emergency_name: "Mbah Susi"
+                  emergency_phone: "08111236025"
+                  emergency_status: "other family"
+                  education_category: "Non-IT"
+                  education_major: "S1"
+                  education_graduate: "Elektronika"
                 message: "success update mentee data"
         400:
           $ref: "#/components/responses/400"
@@ -759,7 +802,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: mentee_id
+        - name: section
           in: path
           required: true
           schema:
@@ -836,13 +879,6 @@ paths:
           schema:
             type: string
             example: "BackEnd"
-        - name: batch
-          description: "class batch"
-          required: false
-          in: query
-          schema:
-            type: string
-            example: "15"
         - name: start class
           description: "start class date"
           required: false
@@ -888,32 +924,27 @@ paths:
               example:
                 data:
                   - id: 1
-                    name: "Back End Engineer"
-                    batch: "14"
+                    name: "Back End Engineer Batch 15"
                     start_class: "06/03/2023"
                     end_class: "06/03/2023"
                     mentor: "Rachman Kamil"
                   - id: 2
-                    name: "Front End Engineer"
-                    batch: "14"
+                    name: "Front End Engineer Batch 15"
                     start_class: "2023-03-06"
                     end_class: "2023-03-06"
                     mentor: "Rachman Kamil"
                   - id: 3
-                    name: "Back End Engineer"
-                    batch: "15"
+                    name: "Back End Engineer Batch 16"
                     start_class: "2023-03-06"
                     end_class: "2023-03-06"
                     mentor: "Rachman Kamil"
                   - id: 4
-                    name: "Front End Engineer"
-                    batch: "15"
+                    name: "Front End Engineer Batch 16"
                     start_class: "2023-03-06"
                     end_class: "2023-03-06"
                     mentor: "Rachman Kamil"
                   - id: 5
-                    name: "Quality Assurance"
-                    batch: "15"
+                    name: "Quality Assurance Batch 16"
                     start_class: "2023-03-06"
                     end_class: "2023-03-06"
                     mentor: "Rachman Kamil"
@@ -947,8 +978,7 @@ paths:
               example:
                 data:
                   id: 1
-                  name: "Back End Engineer"
-                  batch: "14"
+                  name: "Back End Engineer Batch 15"
                   start_class: "2023-03-06"
                   end_class: "2023-03-06"
                   mentor: "Rachman Kamil"
@@ -979,8 +1009,7 @@ paths:
             schema:
               type: object
             example:
-              name: "Back End Engineer"
-              batch: "14"
+              name: "Back End Engineer Batch 15"
               start_class: "2023-03-06"
               end_class: "2023-03-06"
               mentor: "Rachman Kamil"
@@ -994,8 +1023,7 @@ paths:
               example:
                 data:
                 id: 2
-                name: "BackEnd"
-                batch: "14"
+                name: "BackEnd Batch 15"
                 start_class: "2023-03-06"
                 end_class: "2023-03-06"
                 mentor: "fakhry"
@@ -1050,18 +1078,15 @@ paths:
             schema:
               type: object
               properties:
-                user_id: 
-                  type: integer
-                mentee_id:
-                  type: integer
-                notes: 
+                section:
+                  type: string
+                feedback: 
                   type: string
                 status:
                   type: string
             example:
-              user_id: 1
-              mentee_id: 1
-              notes: "keep going"
+              section: "Join Class"
+              feedback: "keep going"
               status: "continue section 2"
       responses:
         201:
@@ -1077,16 +1102,16 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-  /feedback/{feedback_id}:
+  /feedback/{mentee_id}:
     get:
       tags:
         - "feedback"
-      summary: "show feedback by id"
-      description: "feature for show feedback by id"
+      summary: "show feedback by mentee id"
+      description: "feature for show feedback by mentee id"
       security:
         - JWTAuth: []
       parameters:
-        - name: feedback_id
+        - name: mentee_id
           in: path
           required: true
           schema:
@@ -1104,7 +1129,7 @@ paths:
                     mentee_id: 1
                     name: "Bambang Suwono"
                     class: "BE Batch 15"
-                    category: "IT"
+                    education_category: "IT"
                     phone: "081122334455"
                     telegram: "@bambs"
                     email: "bambs@gmail.coom"                  
@@ -1113,9 +1138,23 @@ paths:
                       name: "Rachman Kamil"
                       created_at: "2023-03-06"
                       status: "interview agreed"
-                      notes: 
-                        notes_id : 1
-                        notes: "keep going"
+                      feedback: 
+                        feedback_id : 1
+                        feedback: "keep going"
+                    - user_id: 1
+                      name: "Rachman Kamil"
+                      created_at: "2023-03-07"
+                      status: "interview agreed"
+                      feedback: 
+                        feedback_id : 2
+                        feedback: "keep going go"
+                    - user_id: 1
+                      name: "Rachman Kamil"
+                      created_at: "2023-03-08"
+                      status: "interview agreed"
+                      feedback: 
+                        feedback_id : 3
+                        feedback: "keep going"
                 message: "success show feedback"
         400:
           $ref: "#/components/responses/400"
