@@ -69,8 +69,13 @@ func (us *userService) Profile(token interface{}) (users.Core, error) {
 }
 
 // ProfileAdm implements users.UserService
-func (*userService) ProfileAdm(userID uint) (users.Core, error) {
-	panic("unimplemented")
+func (us *userService) ProfileAdm(userID uint) (users.Core, error) {
+	res, err := us.qry.ProfileAdm(uint(userID))
+	if err != nil {
+		log.Println("data not found")
+		return users.Core{}, errors.New("query error, problem with server")
+	}
+	return res, nil
 }
 
 // Register implements users.UserService
