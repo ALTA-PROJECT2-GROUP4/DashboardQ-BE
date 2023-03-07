@@ -9,7 +9,7 @@ type Core struct {
 	Name      string
 	DateBirth string
 	Email     string `validate:"omitempty,email"`
-	Password  string `validate:"min=6,emitempty"`
+	Password  string `validate:"min=6,omitempty"`
 	Address   string
 	Gender    string
 	Role      string
@@ -50,6 +50,6 @@ type UserData interface {
 	UpdateAdm(adminID, userID uint, newUpdate Core) (Core, error)
 	ShowAll() ([]Core, error)
 	Profile(userID uint) (Core, error)
-	Update(userID uint, newUser Core) (Core, error)
+	Update(userID uint, newUpdate Core) (Core, error)
 	Deactive(adminID, userID uint) error
 }
