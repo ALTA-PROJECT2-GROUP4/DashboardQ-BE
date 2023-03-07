@@ -14,6 +14,12 @@ type userHandler struct {
 	srv users.UserService
 }
 
+func New(srv users.UserService) users.UserHandler {
+	return &userHandler{
+		srv: srv,
+	}
+}
+
 // Deactive implements users.UserHandler
 func (*userHandler) Deactive() echo.HandlerFunc {
 	panic("unimplemented")
@@ -111,8 +117,21 @@ func (uh *userHandler) Register() echo.HandlerFunc {
 }
 
 // ShowAll implements users.UserHandler
-func (*userHandler) ShowAll() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) ShowAll() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		res, err := uh.srv.ShowAll()
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
+		}
+		result := []ShowAllEmployee{}
+		for _, val := range res {
+			result = append(result, ShowAllEmployeeJson(val))
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    result,
+			"message": "success show all users",
+		})
+	}
 }
 
 // ShowAllAdm implements users.UserHandler
@@ -130,8 +149,4 @@ func (*userHandler) UpdateAdm() echo.HandlerFunc {
 	panic("unimplemented")
 }
 
-func New(srv users.UserService) users.UserHandler {
-	return &userHandler{
-		srv: srv,
-	}
-}
+
