@@ -20,8 +20,35 @@ func New(db *gorm.DB) users.UserData {
 }
 
 // Deactive implements users.UserData
-func (*userQuery) Deactive(adminID uint, userID uint) error {
-	panic("unimplemented")
+func (uq *userQuery) Deactive(adminID uint, userID uint) error {
+	if userID == 1 {
+		log.Println("cannot modifed admin data")
+		return errors.New("cannot modifed admin data")
+	}
+	if adminID != 1 {
+		log.Println("except admin not allowed modifed datad")
+		return errors.New("except admin not allowed modifed data")
+	}
+	getID := User{}
+	err := uq.db.Where("id = ?", userID).First(&getID).Error
+	if err != nil {
+		log.Println("get user error : ", err.Error())
+		return errors.New("failed to get user data")
+	}
+
+	if getID.ID != userID {
+		log.Println("unauthorized request")
+		return errors.New("unauthorized request")
+	}
+	qryDelete := uq.db.Delete(&User{}, userID)
+	affRow := qryDelete.RowsAffected
+
+	if affRow <= 0 {
+		log.Println("No rows affected")
+		return errors.New("failed to delete user content, data not found")
+	}
+
+	return nil
 }
 
 // Login implements users.UserData
