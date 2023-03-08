@@ -92,7 +92,7 @@ func (uh *userHandler) Profile() echo.HandlerFunc {
 // ProfileAdm implements users.UserHandler
 func (uh *userHandler) ProfileAdm() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		eID := c.Param("id")
+		eID := c.Param("user_id")
 		userID, _ := strconv.Atoi(eID)
 		res, err := uh.srv.ProfileAdm(uint(userID))
 		if err != nil {
