@@ -36,7 +36,7 @@ type UserService interface {
 	ShowAllAdm() ([]Core, error)
 	ProfileAdm(userID uint) (Core, error)
 	ShowAll() ([]Core, error)
-	Profile(token interface{}) (Core, error)
+	Profile(token interface{}, userID uint) (Core, error)
 	UpdateAdm(token interface{}, userID uint, newUpdate Core) (Core, error)
 	Update(token interface{}, newUpdate Core) (Core, error)
 	Deactive(token interface{}, userID uint) error

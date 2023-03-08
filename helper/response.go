@@ -36,6 +36,8 @@ func PrintErrorResponse(msg string) (int, interface{}) {
 		code = http.StatusUnauthorized
 	} else if strings.Contains(msg, "not found") {
 		code = http.StatusNotFound
+	} else if strings.Contains(msg, "cannot access") {
+		code = http.StatusUnauthorized
 	}
 
 	return code, resp

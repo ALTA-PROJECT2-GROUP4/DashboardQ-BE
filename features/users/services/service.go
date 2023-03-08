@@ -64,10 +64,19 @@ func (us *userService) Login(email string, password string) (string, users.Core,
 }
 
 // Profile implements users.UserService
-func (us *userService) Profile(token interface{}) (users.Core, error) {
-	userID := helper.ExtractToken(token)
-	res, err := us.qry.Profile(uint(userID))
+func (us *userService) Profile(token interface{}, userID uint) (users.Core, error) {
+	var res users.Core
+	var err error
+	if userID != 0 {
+		res, err = us.qry.Profile(uint(userID))
+	} else {
+		userID = uint(helper.ExtractToken(token))
+		res, err = us.qry.Profile(uint(userID))
+	}
 	if err != nil {
+		if strings.Contains(err.Error(), "cannot access") {
+			return users.Core{}, err
+		}
 		log.Println("data not found")
 		return users.Core{}, errors.New("query error, problem with server")
 	}
