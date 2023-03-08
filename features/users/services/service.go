@@ -139,22 +139,26 @@ func (us *userService) ShowAllAdm() ([]users.Core, error) {
 // Update implements users.UserService
 func (us *userService) Update(token interface{}, newUpdate users.Core) (users.Core, error) {
 	userID := helper.ExtractToken(token)
-
+	if userID <= 0 {
+		return users.Core{}, errors.New("data not found")
+	}
+	// Validasi password
 	hashed := helper.GeneratePassword(newUpdate.Password)
 	newUpdate.Password = string(hashed)
 
+	// -----------------Input data to query----------------
 	res, err := us.qry.Update(uint(userID), newUpdate)
 	if err != nil {
-		msg := ""
-		if strings.Contains(err.Error(), "not found") {
-			msg = "account not registered"
-		} else if strings.Contains(err.Error(), "email") {
-			msg = "email duplicated"
-		} else if strings.Contains(err.Error(), "access denied") {
-			msg = "access denied"
+		log.Println("query error", err.Error())
+		if strings.Contains(err.Error(), "email duplicated") {
+			return users.Core{}, errors.New("email already used")
+		} else if strings.Contains(err.Error(), "username duplicated") {
+			return users.Core{}, errors.New("username already used")
+		} else {
+			return users.Core{}, errors.New("query error, update fail")
 		}
-		return users.Core{}, errors.New(msg)
 	}
+
 	return res, nil
 }
 

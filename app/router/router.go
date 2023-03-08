@@ -35,7 +35,7 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	// USER
 	e.GET("/profile", userHandler.ShowAll(), middleware.JWT([]byte(config.JWTKey)))
 	e.GET("/profile/:user_id", userHandler.Profile(), middleware.JWT([]byte(config.JWTKey)))
-	e.PUT("/profile/:user_id", userHandler.Update(), middleware.JWT([]byte(config.JWTKey)))
+	e.PUT("/profile", userHandler.Update(), middleware.JWT([]byte(config.JWTKey)))
 
 	// CLASS
 	e.POST("/create", classHandler.Create(), middleware.JWT([]byte(config.JWTKey)))
