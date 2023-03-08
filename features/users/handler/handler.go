@@ -25,7 +25,7 @@ func New(srv users.UserService) users.UserHandler {
 func (uh *userHandler) Deactive() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		token := c.Get("user")
-		paramID := c.Param("id")
+		paramID := c.Param("user_id")
 		userID, err := strconv.Atoi(paramID)
 		if err != nil {
 			log.Println("convert id error", err.Error())
