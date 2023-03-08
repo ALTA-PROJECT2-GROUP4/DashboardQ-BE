@@ -163,19 +163,18 @@ func (uq *userQuery) Update(userID uint, newUpdate users.Core) (users.Core, erro
 			return users.Core{}, errors.New("email duplicated")
 		}
 	}
-	cnv := CoreToModel(newUpdate)
-	qry := uq.db.Model(&User{}).Where("id = ?", userID).Updates(&cnv)
-	affrows := qry.RowsAffected
-	if affrows == 0 {
-		log.Println("no rows affected")
-		return users.Core{}, errors.New("no data updated")
+	data := CoreToModel(newUpdate)
+	qry := uq.db.Where("id = ?", userID).Updates(&data)
+	if qry.RowsAffected <= 0 {
+		log.Println("update error : no rows affected")
+		return users.Core{}, errors.New("update error : no rows updated")
 	}
 	err := qry.Error
 	if err != nil {
-		log.Println("update user query error", err.Error())
-		return users.Core{}, errors.New("user not found")
+		log.Println("update error")
+		return users.Core{}, errors.New("query error,update fail")
 	}
-	result := ModelToCore(cnv)
+	result := ModelToCore(data)
 	result.ID = userID
 	return result, nil
 }

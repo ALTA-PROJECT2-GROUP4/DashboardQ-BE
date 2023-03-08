@@ -165,13 +165,13 @@ func ConvertUpdateResponse(inputan users.Core) (interface{}, error) {
 		result["id"] = ResponseFilter.ID
 	}
 	if ResponseFilter.Role != "" {
-		result["email"] = ResponseFilter.Role
+		result["role"] = ResponseFilter.Role
 	}
 	if ResponseFilter.Name != "" {
 		result["name"] = ResponseFilter.Name
 	}
 	if ResponseFilter.DateBirth != "" {
-		result["birth_of_date"] = ResponseFilter.DateBirth
+		result["date_birth"] = ResponseFilter.DateBirth
 	}
 	if ResponseFilter.Email != "" {
 		result["email"] = ResponseFilter.Email
@@ -180,7 +180,7 @@ func ConvertUpdateResponse(inputan users.Core) (interface{}, error) {
 		result["gender"] = ResponseFilter.Gender
 	}
 	if ResponseFilter.Team != "" {
-		result["position"] = ResponseFilter.Team
+		result["team"] = ResponseFilter.Team
 	}
 	if ResponseFilter.Phone != "" {
 		result["phone"] = ResponseFilter.Phone
