@@ -83,16 +83,6 @@ func (us *userService) Profile(token interface{}, userID uint) (users.Core, erro
 	return res, nil
 }
 
-// ProfileAdm implements users.UserService
-func (us *userService) ProfileAdm(userID uint) (users.Core, error) {
-	res, err := us.qry.ProfileAdm(uint(userID))
-	if err != nil {
-		log.Println("data not found")
-		return users.Core{}, errors.New("query error, problem with server")
-	}
-	return res, nil
-}
-
 // Register implements users.UserService
 func (us *userService) Register(token interface{}, newUser users.Core) (users.Core, error) {
 	adminID := helper.ExtractToken(token)
@@ -119,16 +109,6 @@ func (us *userService) Register(token interface{}, newUser users.Core) (users.Co
 // ShowAll implements users.UserService
 func (us *userService) ShowAll() ([]users.Core, error) {
 	res, err := us.qry.ShowAll()
-	if err != nil {
-		log.Println("data not found", err.Error())
-		return []users.Core{}, errors.New("data not found")
-	}
-	return res, nil
-}
-
-// ShowAllAdm implements users.UserService
-func (us *userService) ShowAllAdm() ([]users.Core, error) {
-	res, err := us.qry.ShowAllAdm()
 	if err != nil {
 		log.Println("data not found", err.Error())
 		return []users.Core{}, errors.New("data not found")
