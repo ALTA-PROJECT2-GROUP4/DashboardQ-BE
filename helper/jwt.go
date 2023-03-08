@@ -2,6 +2,7 @@ package helper
 
 import (
 	"dashboardq-be/app/config"
+	"log"
 
 	"github.com/golang-jwt/jwt"
 )
@@ -17,16 +18,19 @@ func ExtractToken(t interface{}) int {
 		case int:
 			userId = claims["userID"].(int)
 		}
-		return int(userId)
 	}
-	return -1
+	return userId
 }
-func GenerateJWT(id int) (string, interface{}) {
+func GenerateToken(userId int) (string, interface{}) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
-	claims["userID"] = id
-	// claims["exp"] = time.Now().Add(time.Hour * 1).Unix() //Token expires after 1 hour
+	claims["userID"] = userId
+	// claims["exp"] = time.Now().Add(time.Hour * 3).Unix() //Token expires after 3 hour
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	useToken, _ := token.SignedString([]byte(config.JWTKey))
+	useToken, err := token.SignedString([]byte(config.JWTKey))
+	if err != nil {
+		log.Println(err.Error())
+	}
+	// log.Println(useToken, "/n", token)
 	return useToken, token
 }

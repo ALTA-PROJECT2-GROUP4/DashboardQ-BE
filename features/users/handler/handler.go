@@ -2,6 +2,7 @@ package handler
 
 import (
 	"dashboardq-be/features/users"
+	"dashboardq-be/helper"
 	"log"
 	"net/http"
 	"strconv"
@@ -74,11 +75,11 @@ func (uh *userHandler) Login() echo.HandlerFunc {
 // Profile implements users.UserHandler
 func (uh *userHandler) Profile() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		// eID := c.Param("id")
-		// userID, _ := strconv.Atoi(eID)
-		res, err := uh.srv.Profile(c.Get("user"))
+		uID := c.Param("user_id")
+		userID, _ := strconv.Atoi(uID)
+		res, err := uh.srv.Profile(c.Get("user"), uint(userID))
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
+			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
 
 		return c.JSON(http.StatusOK, map[string]interface{}{
@@ -223,7 +224,7 @@ func (uh *userHandler) UpdateAdm() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, "input format incorrect")
 		}
-		
+
 		res, err := uh.srv.UpdateAdm(c.Get("user"), uint(userID), *ReqToCore(input))
 		if err != nil {
 			if strings.Contains(err.Error(), "email duplicated") {
