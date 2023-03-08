@@ -206,7 +206,7 @@ func (uh *userHandler) Update() echo.HandlerFunc {
 // UpdateAdm implements users.UserHandler
 func (uh *userHandler) UpdateAdm() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		uID := c.Param("id")
+		uID := c.Param("user_id")
 		userID, _ := strconv.Atoi(uID)
 		input := RegisterReq{}
 		err := c.Bind(&input)
