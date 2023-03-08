@@ -10,6 +10,7 @@ type Core struct {
 	StartClass string
 	EndClass   string
 	IdUser     uint
+	UserName   string
 }
 
 type ClassHandler interface {
@@ -23,7 +24,7 @@ type ClassHandler interface {
 type ClassService interface {
 	Create(token interface{}, newClass Core) (Core, error)
 	ShowAll() ([]Core, error)
-	Show(token interface{}) (Core, error)
+	Show(classID uint) (Core, error)
 	Update(token interface{}, classID uint, newUpdate Core) (Core, error)
 	Delete(token interface{}, classID uint) error
 }
@@ -32,6 +33,6 @@ type ClassData interface {
 	Create(userID uint, newClass Core) (Core, error)
 	ShowAll() ([]Core, error)
 	Show(classID uint) (Core, error)
-	Update(classID uint, newClass Core) (Core, error)
+	Update(userID, classID uint, newUpdate Core) (Core, error)
 	Delete(userID, classID uint) error
 }
