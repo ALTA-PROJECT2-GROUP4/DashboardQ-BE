@@ -12,7 +12,6 @@ type userQuery struct {
 	db *gorm.DB
 }
 
-
 func New(db *gorm.DB) users.UserData {
 	return &userQuery{
 		db: db,
@@ -81,17 +80,6 @@ func (uq *userQuery) Profile(userID uint) (users.Core, error) {
 	return ModelToCore(res), nil
 }
 
-// ProfileAdm implements users.UserData
-func (uq *userQuery) ProfileAdm(userID uint) (users.Core, error) {
-	res := User{}
-	err := uq.db.Where("id = ?", userID).First(&res).Error
-	if err != nil {
-		log.Println("query err", err.Error())
-		return users.Core{}, errors.New("account not found")
-	}
-	return ModelToCore(res), nil
-}
-
 // Register implements users.UserData
 func (uq *userQuery) Register(adminID uint, newUser users.Core) (users.Core, error) {
 	if adminID != 1 {
@@ -129,21 +117,6 @@ func (uq *userQuery) ShowAll() ([]users.Core, error) {
 	}
 	result := []users.Core{}
 	for _, val := range getall {
-		result = append(result, ModelToCore(val))
-	}
-	return result, nil
-}
-
-// ShowAllAdm implements users.UserData
-func (uq *userQuery) ShowAllAdm() ([]users.Core, error) {
-	showall := []User{}
-	err := uq.db.Where("role = ?", "user").Find(&showall).Error
-	if err != nil {
-		log.Println("data not found")
-		return []users.Core{}, errors.New("data not found")
-	}
-	result := []users.Core{}
-	for _, val := range showall {
 		result = append(result, ModelToCore(val))
 	}
 	return result, nil
@@ -212,4 +185,3 @@ func (uq *userQuery) UpdateAdm(adminID uint, userID uint, newUpdate users.Core) 
 	result.ID = userID
 	return result, nil
 }
-

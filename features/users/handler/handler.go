@@ -89,23 +89,6 @@ func (uh *userHandler) Profile() echo.HandlerFunc {
 	}
 }
 
-// ProfileAdm implements users.UserHandler
-func (uh *userHandler) ProfileAdm() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		eID := c.Param("user_id")
-		userID, _ := strconv.Atoi(eID)
-		res, err := uh.srv.ProfileAdm(uint(userID))
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
-		}
-
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"data":    ToProfileResponse(res),
-			"message": "success show profile",
-		})
-	}
-}
-
 // Register implements users.UserHandler
 func (uh *userHandler) Register() echo.HandlerFunc {
 	return func(c echo.Context) error {
@@ -138,24 +121,6 @@ func (uh *userHandler) Register() echo.HandlerFunc {
 func (uh *userHandler) ShowAll() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		res, err := uh.srv.ShowAll()
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
-		}
-		result := []ShowAllUser{}
-		for _, val := range res {
-			result = append(result, ShowAllUserJson(val))
-		}
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"data":    result,
-			"message": "success show all users",
-		})
-	}
-}
-
-// ShowAllAdm implements users.UserHandler
-func (uh *userHandler) ShowAllAdm() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		res, err := uh.srv.ShowAllAdm()
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
 		}

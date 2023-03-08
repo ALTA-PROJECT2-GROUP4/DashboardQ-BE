@@ -21,8 +21,6 @@ type Core struct {
 type UserHandler interface {
 	Register() echo.HandlerFunc
 	Login() echo.HandlerFunc
-	ShowAllAdm() echo.HandlerFunc
-	ProfileAdm() echo.HandlerFunc
 	UpdateAdm() echo.HandlerFunc
 	ShowAll() echo.HandlerFunc
 	Profile() echo.HandlerFunc
@@ -33,8 +31,6 @@ type UserHandler interface {
 type UserService interface {
 	Register(token interface{}, newUser Core) (Core, error)
 	Login(email, password string) (string, Core, error)
-	ShowAllAdm() ([]Core, error)
-	ProfileAdm(userID uint) (Core, error)
 	ShowAll() ([]Core, error)
 	Profile(token interface{}, userID uint) (Core, error)
 	UpdateAdm(token interface{}, userID uint, newUpdate Core) (Core, error)
@@ -45,8 +41,6 @@ type UserService interface {
 type UserData interface {
 	Register(adminID uint, newUser Core) (Core, error)
 	Login(email string) (Core, error)
-	ShowAllAdm() ([]Core, error)
-	ProfileAdm(userID uint) (Core, error)
 	UpdateAdm(adminID, userID uint, newUpdate Core) (Core, error)
 	ShowAll() ([]Core, error)
 	Profile(userID uint) (Core, error)
