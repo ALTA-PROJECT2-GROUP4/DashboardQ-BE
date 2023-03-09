@@ -6,6 +6,7 @@ import (
 
 	"dashboardq-be/app/config"
 	classData "dashboardq-be/features/class/data"
+	menteeData "dashboardq-be/features/mentee/data"
 	userData "dashboardq-be/features/users/data"
 
 	"gorm.io/driver/mysql"
@@ -27,4 +28,5 @@ func InitDB(cfg config.DBConfig) *gorm.DB {
 func Migrate(db *gorm.DB) {
 	db.AutoMigrate(userData.User{})
 	db.AutoMigrate(classData.Class{})
+	db.AutoMigrate(menteeData.Mentee{})
 }
