@@ -9,6 +9,7 @@ type ShowAllMentee struct {
 	Status   string `json:"status"`
 	Category string `json:"category"`
 	Gender   string `json:"gender"`
+	Role     string `json:"role"`
 }
 
 func ShowAllMenteeJson(data mentee.Core) ShowAllMentee {
@@ -19,5 +20,6 @@ func ShowAllMenteeJson(data mentee.Core) ShowAllMentee {
 		Status:   data.Status,
 		Category: data.Category,
 		Gender:   data.Gender,
+		Role:     data.Role,
 	}
 }

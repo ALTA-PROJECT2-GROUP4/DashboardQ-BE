@@ -20,26 +20,30 @@ func New(db *gorm.DB) mentee.MenteeData {
 
 // AddMentee implements mentee.MenteeData
 func (mq *menteeQuery) AddMentee(userID uint, newMentee mentee.Core) (mentee.Core, error) {
-	cnvP := CoreToModel(newMentee)
-	cnvP.UserID = userID
+	newMentee.Role = "mentee"
 
-	err := mq.db.Create(&cnvP).Error
+	cnv := CoreToModel(newMentee)
+	err := mq.db.Create(&cnv).Error
 	if err != nil {
-		log.Println("\tadd mentee query error: ", err.Error())
-		return mentee.Core{}, errors.New("server problem")
+		log.Println("query error", err.Error())
+		return mentee.Core{}, errors.New("server error")
 	}
 
-	return ModelToCore(cnvP), nil
+	newMentee.ID = cnv.ID
+	return newMentee, nil
 }
 
 // ShowAll implements mentee.MenteeData
 func (mq *menteeQuery) ShowAll() ([]mentee.Core, error) {
-	allMentee := []mentee.Core{}
-	err := mq.db.Raw("SELECT m.id, m.user_id, u.name user_name, m.name, name, class, status, category, gender FROM mentees m JOIN users u ON u.id = p.user_id WHERE p.deleted_at IS NULL").Scan(&allMentee).Error
+	getall := []Mentee{}
+	err := mq.db.Where("role = ?", "mentee").Find(&getall).Error
 	if err != nil {
-		log.Println("\terror query get all mentee: ", err.Error())
-		return []mentee.Core{}, err
+		log.Println("data not found")
+		return []mentee.Core{}, errors.New("data not found")
 	}
-
-	return allMentee, nil
+	result := []mentee.Core{}
+	for _, val := range getall {
+		result = append(result, ModelToCore(val))
+	}
+	return result, nil
 }
