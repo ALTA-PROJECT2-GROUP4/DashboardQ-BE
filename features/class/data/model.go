@@ -2,7 +2,7 @@ package data
 
 import (
 	"dashboardq-be/features/class"
-	user "dashboardq-be/features/users/data"
+	"dashboardq-be/features/users"
 
 	"gorm.io/gorm"
 )
@@ -13,8 +13,12 @@ type Class struct {
 	StartClass string
 	EndClass   string
 	IdUser     uint
-	UserName   string
-	User       user.User
+	User       User `gorm:"foreignKey:IdUser"`
+}
+
+type User struct {
+	gorm.Model
+	Name string
 }
 
 // mengubah dari struct core ke struct model
@@ -36,6 +40,9 @@ func ModelToCore(dataModel Class) class.Core {
 		StartClass: dataModel.StartClass,
 		EndClass:   dataModel.EndClass,
 		IdUser:     dataModel.User.ID,
+		User: users.Core{
+			Name: dataModel.User.Name,
+		},
 	}
 }
 

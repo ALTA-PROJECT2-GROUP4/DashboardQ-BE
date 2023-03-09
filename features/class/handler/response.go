@@ -31,6 +31,6 @@ func CoreToShowClassResp(data class.Core) ShowClassResp {
 		StartClass: data.StartClass,
 		EndClass:   data.EndClass,
 		IdUser:     data.IdUser,
-		User:       UserClassResp{UserName: data.UserName},
+		User:       UserClassResp{UserName: data.User.Name},
 	}
 }
