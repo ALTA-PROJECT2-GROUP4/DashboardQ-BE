@@ -87,7 +87,7 @@ This is a golang rest api project group organized by Alterra Academy. This API i
 
 
 # ERD
-<img src="image/ERD.png">
+<img src="image/ERD.jpg">
 
 # API Documentations
 
@@ -143,9 +143,9 @@ $ cd DashboardQ-BE
 
 ## Authors 👑
 
--   Yazki Baynurrahman [![GitHub](https://img.shields.io/badge/fauzan-putra-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/1makki)
+-   Yazki Baynurrahman [![GitHub](https://img.shields.io/badge/yazki-baynurrahman-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/1makki)
 
--   Adi Yuda Pranata [![GitHub](https://img.shields.io/badge/fauzan-putra-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Adiyuda123)
+-   Adi Yuda Pranata [![GitHub](https://img.shields.io/badge/adi-yuda-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Adiyuda123)
 
 -  Alfian Aditya [![GitHub](https://img.shields.io/badge/alfian-aditya-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alfianadityads)
 
