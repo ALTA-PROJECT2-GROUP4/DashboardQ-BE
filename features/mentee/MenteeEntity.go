@@ -20,6 +20,7 @@ type Core struct {
 	Category        string
 	Major           string
 	Graduate        string
+	UserID          uint
 }
 
 type MenteeHandler interface {
