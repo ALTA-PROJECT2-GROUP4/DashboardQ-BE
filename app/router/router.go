@@ -51,8 +51,8 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 
 	// CLASS
 	e.POST("/create", classHandler.Create(), middleware.JWT([]byte(config.JWTKey)))
-	e.GET("/class:class_id", classHandler.Show(), middleware.JWT([]byte(config.JWTKey)))
+	e.GET("/class/:id_class", classHandler.Show(), middleware.JWT([]byte(config.JWTKey)))
 	e.GET("/class", classHandler.ShowAll(), middleware.JWT([]byte(config.JWTKey)))
-	e.PUT("/class/:class_id", classHandler.Update(), middleware.JWT([]byte(config.JWTKey)))
-	e.DELETE("/class/:class_id", classHandler.Delete(), middleware.JWT([]byte(config.JWTKey)))
+	e.PUT("/class/:id_class", classHandler.Update(), middleware.JWT([]byte(config.JWTKey)))
+	e.DELETE("/class/:id_class", classHandler.Delete(), middleware.JWT([]byte(config.JWTKey)))
 }

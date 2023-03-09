@@ -36,8 +36,14 @@ func (cl *classService) Create(token interface{}, newClass class.Core) (class.Co
 }
 
 // Delete implements class.ClassService
-func (*classService) Delete(token interface{}, classID uint) error {
-	panic("unimplemented")
+func (cl *classService) Delete(token interface{}, classID uint) error {
+	id := helper.ExtractToken(token)
+	err := cl.qry.Delete(uint(id), classID)
+	if err != nil {
+		log.Println("query error", err.Error())
+		return errors.New("query error, delete class fail")
+	}
+	return nil
 }
 
 // Show implements class.ClassService

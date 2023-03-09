@@ -28,7 +28,7 @@ func (cl *classQuery) Create(userID uint, newClass class.Core) (class.Core, erro
 
 // Delete implements class.ClassData
 func (cl *classQuery) Delete(userID uint, classID uint) error {
-	qry := cl.db.Where("user_id = ?", userID).Delete(&Class{}, classID)
+	qry := cl.db.Where("id = ?", classID).Delete(&Class{}, classID)
 
 	if aff := qry.RowsAffected; aff <= 0 {
 		log.Println("\tno rows affected: data not found")
@@ -46,7 +46,7 @@ func (cl *classQuery) Delete(userID uint, classID uint) error {
 // Show implements class.ClassData
 func (cl *classQuery) Show(classID uint) (class.Core, error) {
 	res := Class{}
-	err := cl.db.Where("id = ?", classID).First(&res).Error
+	err := cl.db.Preload("User").Where("id = ?", classID).First(&res).Error
 	if err != nil {
 		log.Println("query err", err.Error())
 		return class.Core{}, errors.New("account not found")
@@ -57,7 +57,7 @@ func (cl *classQuery) Show(classID uint) (class.Core, error) {
 // ShowAll implements class.ClassData
 func (cl *classQuery) ShowAll() ([]class.Core, error) {
 	showall := []Class{}
-	err := cl.db.Where("role = ?", "user").Find(&showall).Error
+	err := cl.db.Preload("User").Find(&showall).Error
 	if err != nil {
 		log.Println("data not found")
 		return []class.Core{}, errors.New("data not found")

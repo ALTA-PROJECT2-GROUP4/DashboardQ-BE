@@ -1,6 +1,8 @@
 package class
 
 import (
+	"dashboardq-be/features/users"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -10,7 +12,7 @@ type Core struct {
 	StartClass string
 	EndClass   string
 	IdUser     uint
-	UserName   string
+	User       users.Core
 }
 
 type ClassHandler interface {
