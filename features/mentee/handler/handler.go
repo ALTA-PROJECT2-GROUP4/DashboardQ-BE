@@ -28,7 +28,7 @@ func (mh *menteeHandler) AddMentee() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "input format incorrect"})
 		}
 
-		res, err := mh.srv.AddMentee(c.Get("mentee"), *ReqToCore(input))
+		res, err := mh.srv.AddMentee(c.Get("user"), *ReqToCore(input))
 		if err != nil {
 			if strings.Contains(err.Error(), "already") {
 				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "email already registered"})
