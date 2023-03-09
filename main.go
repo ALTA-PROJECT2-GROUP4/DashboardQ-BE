@@ -1,9 +1,9 @@
 package main
 
 import (
+	config "dashboardq-be/app/config"
 	database "dashboardq-be/app/database"
 	router "dashboardq-be/app/router"
-	config "dashboardq-be/app/config"
 	"log"
 
 	"github.com/labstack/echo/v4"

@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"log"
 
+	"dashboardq-be/app/config"
+	classData "dashboardq-be/features/class/data"
+	userData "dashboardq-be/features/users/data"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"dashboardq-be/app/config"
-	userData "dashboardq-be/features/users/data"
 )
 
 func InitDB(cfg config.DBConfig) *gorm.DB {
@@ -24,4 +26,5 @@ func InitDB(cfg config.DBConfig) *gorm.DB {
 
 func Migrate(db *gorm.DB) {
 	db.AutoMigrate(userData.User{})
+	db.AutoMigrate(classData.Class{})
 }
