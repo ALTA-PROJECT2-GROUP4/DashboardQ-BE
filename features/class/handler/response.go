@@ -12,7 +12,6 @@ type ShowClassResp struct {
 	Name       string        `json:"name" form:"name"`
 	StartClass string        `json:"start_class" form:"start_class"`
 	EndClass   string        `json:"end_class" form:"end_class"`
-	IdUser     uint          `json:"id_user" form:"id_user"`
 	User       UserClassResp `json:"user"`
 }
 
@@ -30,7 +29,6 @@ func CoreToShowClassResp(data class.Core) ShowClassResp {
 		Name:       data.Name,
 		StartClass: data.StartClass,
 		EndClass:   data.EndClass,
-		IdUser:     data.IdUser,
 		User:       UserClassResp{UserName: data.User.Name},
 	}
 }

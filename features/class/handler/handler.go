@@ -35,7 +35,7 @@ func (cl *classHandler) Create() echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusCreated, map[string]interface{}{
-			"data":    res,
+			"data":    CoreToShowClassResp(res),
 			"message": "success create class",
 		})
 	}
@@ -139,7 +139,7 @@ func (cl *classHandler) Update() echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusCreated, map[string]interface{}{
-			"data":    res,
+			"data":    CoreToShowClassResp(res),
 			"message": "success update class",
 		})
 	}
