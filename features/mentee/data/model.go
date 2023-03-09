@@ -26,7 +26,7 @@ type Mentee struct {
 	Major           string
 	Graduate        string
 	UserID          uint
-	FeedbackID      feedback.Feedback `gorm:"foreignkey:FeedbackID;association_foreignkey:ID"`
+	Feedback      feedback.Feedback `gorm:"foreignkey:FeedbackID;association_foreignkey:ID"`
 }
 
 func ModelToCore(data Mentee) mentee.Core {

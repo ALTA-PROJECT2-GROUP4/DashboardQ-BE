@@ -1,7 +1,10 @@
 package data
 
+import "gorm.io/gorm"
+
 type Feedback struct {
-	ID     uint
-	Status string
-	Notes  string
+	gorm.Model
+	Status     string
+	Notes      string
+	FeedbackID uint
 }
