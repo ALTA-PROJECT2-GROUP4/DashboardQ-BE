@@ -3,6 +3,7 @@ package mentee
 import "github.com/labstack/echo/v4"
 
 type Core struct {
+	ID              uint
 	Name            string
 	Phone           string
 	Telegram        string
@@ -19,11 +20,6 @@ type Core struct {
 	Category        string
 	Major           string
 	Graduate        string
-}
-
-type ClassCore struct {
-	ID   uint
-	Name string
 }
 
 type MenteeHandler interface {
