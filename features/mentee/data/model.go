@@ -25,6 +25,7 @@ type Mentee struct {
 	Category        string
 	Major           string
 	Graduate        string
+	UserID          uint
 	FeedbackID      feedback.Feedback `gorm:"foreignkey:FeedbackID;association_foreignkey:ID"`
 }
 
@@ -47,6 +48,7 @@ func ModelToCore(data Mentee) mentee.Core {
 		Category:        data.Category,
 		Major:           data.Major,
 		Graduate:        data.Graduate,
+		UserID:          data.UserID,
 	}
 }
 
@@ -69,5 +71,6 @@ func CoreToModel(core mentee.Core) Mentee {
 		Category:        core.Category,
 		Major:           core.Major,
 		Graduate:        core.Graduate,
+		UserID:          core.UserID,
 	}
 }
