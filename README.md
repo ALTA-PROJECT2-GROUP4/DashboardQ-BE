@@ -110,7 +110,7 @@ $ cd DashboardQ-BE
 
 
 # UNIT TEST COVERAGE ALL
-<img src="image/UT_ALL.png">
+<img src="image/UT_All.png">
 
 ## Authors 👑
 
