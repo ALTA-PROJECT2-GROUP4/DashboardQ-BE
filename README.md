@@ -108,35 +108,6 @@ $ git clone https://github.com/ALTA-PROJECT2-GROUP4/DashboardQ-BE.git
 $ cd DashboardQ-BE
 ```
 
-# UNIT TEST COVERAGE BY FEATURE
-
-<div>
-- USER
-</div>
-<div>
-<img src="image/UT_Users.png">
-</div>
-
-<div>
-- MENTEE
-</div>
-<div>
-
-</div>
-
-<div>
-- CLASS
-</div>
-<div>
-
-</div>
-
-<div>
-- FEEDBACK
-</div>
-<div>
-
-</div>
 
 # UNIT TEST COVERAGE ALL
 <img src="image/UT_ALL.png">

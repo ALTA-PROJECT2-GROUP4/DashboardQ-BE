@@ -63,12 +63,12 @@ func TestCreate(t *testing.T) {
 		pToken.Valid = true
 		res, err := srv.Create(pToken, inputData)
 		assert.NotNil(t, err)
-		assert.ErrorContains(t, err, "access denied")
+		assert.ErrorContains(t, err, "server")
 		assert.Equal(t, uint(0), res.ID)
 		repo.AssertExpectations(t)
 	})
 
-	t.Run("internal server error", func(t *testing.T) {
+	t.Run("internal server problem", func(t *testing.T) {
 		repo.On("Create", uint(1), mock.Anything).Return(class.Core{}, errors.New("server error")).Once()
 		srv := New(repo)
 		_, token := helper.GenerateToken(1)
@@ -77,7 +77,7 @@ func TestCreate(t *testing.T) {
 		res, err := srv.Create(pToken, inputData)
 		assert.NotNil(t, err)
 		assert.Equal(t, uint(0), res.ID)
-		assert.ErrorContains(t, err, "server error")
+		assert.ErrorContains(t, err, "server problem")
 		repo.AssertExpectations(t)
 	})
 }
@@ -187,7 +187,7 @@ func TestUpdate(t *testing.T) {
 func TestDelete(t *testing.T) {
 	repo := mocks.NewClassData(t)
 	t.Run("delete class successful", func(t *testing.T) {
-		repo.On("Delete", uint(1)).Return(nil).Once()
+		repo.On("Delete", uint(1), uint(1)).Return(nil).Once()
 		srv := New(repo)
 		_, token := helper.GenerateToken(1)
 		pToken := token.(*jwt.Token)
@@ -199,7 +199,7 @@ func TestDelete(t *testing.T) {
 	})
 // 	// internal server error, class fail to delete
 	t.Run("internal server error, class fail to delete", func(t *testing.T) {
-		repo.On("Deactive", uint(1)).Return(errors.New("no class has delete")).Once()
+		repo.On("Delete", uint(1), uint(1)).Return(errors.New("no class has delete")).Once()
 		srv := New(repo)
 
 		_, token := helper.GenerateToken(1)
