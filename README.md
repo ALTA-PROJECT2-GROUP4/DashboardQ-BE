@@ -139,7 +139,7 @@ $ cd DashboardQ-BE
 </div>
 
 # UNIT TEST COVERAGE ALL
-<img src="image/UT_Users.png">
+<img src="image/UT_ALL.png">
 
 ## Authors 👑
 
