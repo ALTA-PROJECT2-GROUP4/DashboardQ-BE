@@ -8,8 +8,8 @@ dashboardq-be/features/class/services/service.go:31.3,32.39 2 1
 dashboardq-be/features/class/services/service.go:26.49,28.4 1 0
 dashboardq-be/features/class/services/service.go:28.9,30.4 1 1
 dashboardq-be/features/class/services/service.go:39.71,42.16 3 1
-dashboardq-be/features/class/services/service.go:46.2,46.12 1 0
-dashboardq-be/features/class/services/service.go:42.16,45.3 2 0
+dashboardq-be/features/class/services/service.go:46.2,46.12 1 1
+dashboardq-be/features/class/services/service.go:42.16,45.3 2 1
 dashboardq-be/features/class/services/service.go:50.64,52.16 2 1
 dashboardq-be/features/class/services/service.go:61.2,61.17 1 1
 dashboardq-be/features/class/services/service.go:52.16,54.49 2 1
